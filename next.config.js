@@ -1,6 +1,4 @@
-const withImages = require('next-images')
-
-module.exports = withImages({
+module.exports = {
   esModule: true,
   devIndicators: {
     autoPrerender: true
@@ -14,6 +12,8 @@ module.exports = withImages({
     MESSAGING_SENDER_ID: process.env.MESSAGING_SENDER_ID,
     APP_ID: process.env.APP_ID,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
-    CLIENT_EMAIL: process.env.CLIENT_EMAIL
+    CLIENT_EMAIL: process.env.CLIENT_EMAIL,
+    RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
+    RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY
   }
-})
+}

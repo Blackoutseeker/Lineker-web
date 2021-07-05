@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-export const FormContainer = styled.div`
-  width: 100%;
+export const FormContainer = styled.form`
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -22,23 +22,33 @@ export const Description = styled.span`
 `
 
 export const Input = styled.input`
+  outline: none;
+  border: none;
   width: 80%;
   max-width: 450px;
-  height: 50px;
-  outline: none;
-  background-color: #fff;
+  min-height: 50px;
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 5px solid #222;
-  border-radius: 10px;
+  border-bottom: 1px solid #fff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   margin-top: 15px;
   padding: 0 10px;
-  color: #222;
+  color: #fff;
   font-size: 25px;
+  transition: 200ms;
   ::placeholder {
-    color: #777;
+    color: ${({ theme }) => theme.colors.placeholder};
   }
+  :hover {
+    background-color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+export const ReCAPTCHAContent = styled.div`
+  margin-top: 15px;
 `
 
 interface IProps {
@@ -63,23 +73,22 @@ export const SimpleText = styled.span`
 `
 
 export const Button = styled.button`
+  outline: none;
+  border: none;
   width: 80%;
   max-width: 450px;
   height: 50px;
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.colors.secundary};
+  box-shadow: ${({ theme }) => theme.shadow};
   display: grid;
   place-items: center;
-  outline: none;
-  border: 3px solid #fff;
-  border-radius: 10px;
+  border-radius: 4px;
   margin: 15px 0;
   cursor: pointer;
-  transition: 0.2s;
-  :hover {
-    background-color: #fff;
-  }
-  :hover > span {
-    color: ${({ theme }) => theme.colors.background};
+  :disabled {
+    background-color: ${({ theme }) => theme.colors.primary};
+    cursor: default;
+    box-shadow: none;
   }
 `
 

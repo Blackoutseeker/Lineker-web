@@ -10,18 +10,18 @@ import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
   static async getInitialProps(
-    ctx: DocumentContext
+    context: DocumentContext
   ): Promise<DocumentInitialProps> {
     const sheet = new ServerStyleSheet()
-    const originalRenderPage = ctx.renderPage
+    const originalRenderPage = context.renderPage
 
     try {
-      ctx.renderPage = () =>
+      context.renderPage = () =>
         originalRenderPage({
           enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
         })
 
-      const initialProps = await Document.getInitialProps(ctx)
+      const initialProps = await Document.getInitialProps(context)
       return {
         ...initialProps,
         styles: (
@@ -38,10 +38,10 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="pt-BR">
+      <Html lang="en">
         <Head>
-          <meta charSet="utf-8" />
           <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
+          <meta name="author" content="Felipe Pereira de Souza Silva" />
         </Head>
         <body>
           <Main />

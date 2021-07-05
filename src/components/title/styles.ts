@@ -1,13 +1,12 @@
 import styled from 'styled-components'
 
-interface IProps {
+interface Dimension {
   size?: number
 }
 
 const TitleText = styled.span`
   color: #fff;
-  font-size: ${(props: IProps) => props.size}px;
-  cursor: default;
+  font-size: ${(props: Dimension) => props.size}px;
   .alternative-title {
     color: ${({ theme }) => theme.colors.title};
   }

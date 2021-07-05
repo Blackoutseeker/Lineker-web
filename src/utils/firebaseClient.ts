@@ -2,7 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
 
-interface IFirebaseConfig {
+interface FirebaseConfig {
   apiKey: string
   authDomain: string
   databaseURL: string
@@ -12,7 +12,7 @@ interface IFirebaseConfig {
   appId: string
 }
 
-const firebaseConfig: IFirebaseConfig = {
+const config: FirebaseConfig = {
   apiKey: process.env.API_KEY!,
   authDomain: process.env.AUTH_DOMAIN!,
   databaseURL: process.env.DATABASE_URL!,
@@ -23,7 +23,7 @@ const firebaseConfig: IFirebaseConfig = {
 }
 
 if (typeof window !== 'undefined' && !firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(config)
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 }
 

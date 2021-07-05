@@ -1,15 +1,15 @@
-const INITIAL_STATE = 'light'
+const INITIAL_STATE = false
 
-export interface IThemeAction {
-  type: 'DARK' | 'LIGHT'
+type ActionTypes = 'CHANGE_THEME'
+
+export interface ThemeAction {
+  type: ActionTypes
 }
 
-const Theme = (state: string = INITIAL_STATE, action: IThemeAction) => {
+const Theme = (state: boolean = INITIAL_STATE, action: ThemeAction) => {
   switch (action.type) {
-    case 'DARK':
-      return 'dark'
-    case 'LIGHT':
-      return 'light'
+    case 'CHANGE_THEME':
+      return !state
     default:
       return state
   }

@@ -1,30 +1,29 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
 import Image from 'next/image'
 import QrCode from 'qrcode.react'
-import { Content, QrContent } from './style'
+import { Content, QrContent } from './styles'
 import Apple from '@assets/images/Apple.png'
 import Google from '@assets/images/Google.png'
 
-interface IProps {
+interface StoreContentProps {
   store: string
   qrValue: string
 }
 
-const DesktopStoreContent: FC<IProps> = props => {
-  const { store, qrValue } = props
+const StoreContent: FC<StoreContentProps> = ({ store, qrValue }) => {
   const [mouseOver, setMouseOver] = useState<boolean>(false)
 
-  const handleMouseMove = useCallback((): void => {
+  const handleMouseMove = () => {
     setMouseOver(!mouseOver)
-  }, [setMouseOver, mouseOver])
+  }
 
   return (
     <Content>
       <Image
-        src={store === 'Apple' ? Apple : Google}
-        alt={'Mobile Store Image'}
+        src={store === 'App Store' ? Apple : Google}
+        alt={store}
         width={170}
-        height={70}
+        height={66}
       />
       <QrContent onMouseOver={handleMouseMove} onMouseOut={handleMouseMove}>
         <QrCode
@@ -39,4 +38,4 @@ const DesktopStoreContent: FC<IProps> = props => {
   )
 }
 
-export default DesktopStoreContent
+export default StoreContent

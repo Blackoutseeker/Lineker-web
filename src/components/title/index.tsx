@@ -1,11 +1,11 @@
 import { FC, memo } from 'react'
-import TitleText from './style'
+import TitleText from './styles'
 
-interface IProps {
+interface TitleProps {
   size?: number
 }
 
-const Title: FC<IProps> = props => {
+const Title: FC<TitleProps> = props => {
   const { size } = props
 
   return (

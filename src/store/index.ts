@@ -1,11 +1,11 @@
 import { createStore, combineReducers } from 'redux'
 import Theme from './reducers/theme'
 
-export interface IRootReducer {
-  theme: string
+export interface Reducers {
+  theme: boolean
 }
 
-const rootReducer = combineReducers<IRootReducer>({
+const rootReducer = combineReducers<Reducers>({
   theme: Theme
 })
 
