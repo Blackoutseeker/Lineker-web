@@ -24,7 +24,6 @@ const config: FirebaseConfig = {
 
 if (typeof window !== 'undefined' && !firebase.apps.length) {
   firebase.initializeApp(config)
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 }
 
 export default firebase

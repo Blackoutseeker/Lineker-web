@@ -1,15 +1,15 @@
 import { FC } from 'react'
 import { AppProps } from 'next/app'
 import { Provider, useSelector } from 'react-redux'
-import store, { Reducers } from '@store/index'
+import store, { StoreState } from '@store/index'
 import { ThemeProvider } from 'styled-components'
 import dark from '@styles/themes/dark'
 import light from '@styles/themes/light'
 import GlobalStyle from '@styles/global'
 import { AuthProvider } from '@services/auth'
 
-const StyledProvider: FC = ({ children }) => {
-  const theme = useSelector((state: Reducers) => state.theme)
+const ThemeWrapper: FC = ({ children }) => {
+  const theme = useSelector((state: StoreState) => state.theme)
 
   return (
     <ThemeProvider theme={theme ? dark : light}>
@@ -22,11 +22,11 @@ const StyledProvider: FC = ({ children }) => {
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <Provider store={store}>
-      <StyledProvider>
+      <ThemeWrapper>
         <AuthProvider>
           <Component {...pageProps} />
         </AuthProvider>
-      </StyledProvider>
+      </ThemeWrapper>
     </Provider>
   )
 }

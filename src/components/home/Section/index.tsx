@@ -20,7 +20,7 @@ const Section: FC<SectionProps> = props => {
         alt={title}
         width={imageWidth}
         height={imageHeight}
-        quality={'80%'}
+        quality={'85%'}
         placeholder={'blur'}
       />
     </SectionContainer>

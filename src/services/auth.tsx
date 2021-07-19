@@ -25,10 +25,14 @@ export const AuthProvider = ({ children }: any) => {
   }, [])
 
   useEffect(() => {
+    const refreshTime = (minutes: number): number => {
+      return minutes * (60 * 1000)
+    }
+
     const handleRefresh = setInterval(async () => {
       const user = firebaseClient.auth().currentUser
       if (user) await user.getIdToken(true)
-    }, 15 * (60 * 1000))
+    }, refreshTime(15))
 
     return () => clearInterval(handleRefresh)
   }, [])

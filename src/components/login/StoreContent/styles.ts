@@ -1,6 +1,12 @@
 import styled from 'styled-components'
 
+interface Position {
+  side: 'right' | 'left'
+}
+
 export const Content = styled.div`
+  position: fixed;
+  ${(position: Position) => `${position.side}: 0`};
   min-width: 220px;
   height: 100vh;
   padding: 15px;

@@ -1,5 +1,4 @@
-import { FC } from 'react'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import isMobileDevice from '@services/device'
 import nookies from 'nookies'
 import firebaseAdmin from '@utils/firebaseAdmin'
@@ -19,7 +18,7 @@ import {
 } from '@components/home/styles'
 import PageContainer from '@components/PageContainer'
 import Title from '@components/Title'
-import Lineker from '@assets/images/Lineker.png'
+import LinekerLogo from '@assets/images/Lineker.png'
 import Google from '@assets/images/Google.png'
 import Section from '@components/home/Section'
 import ShowOffDesktop from '@assets/images/Show Off Desktop.png'
@@ -32,18 +31,19 @@ interface HomeProps {
   isMobile: boolean
 }
 
-const Home: FC<HomeProps> = ({ isMobile }) => {
+const Home: NextPage<HomeProps> = ({ isMobile }) => {
   return (
     <PageContainer>
       <Head>
         <title>Lineker</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#003B59" />
       </Head>
       <TitleContent>
         <Title size={40} />
       </TitleContent>
       <Image
-        src={Lineker}
+        src={LinekerLogo}
         alt={'Lineker Logo'}
         width={300}
         height={300}
@@ -87,12 +87,12 @@ const Home: FC<HomeProps> = ({ isMobile }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (
+export const getServerSideProps: GetServerSideProps<HomeProps> = async (
   context: GetServerSidePropsContext
 ) => {
   try {
-    const cookie = nookies.get(context)
-    const token = await firebaseAdmin.auth().verifyIdToken(cookie.token)
+    const cookies = nookies.get(context)
+    const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
     return {
       redirect: {
         destination: `users/${token.uid}?currentFilter=Default`,
@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const isMobile = isMobileDevice(context.req.headers['user-agent'])
     return {
       props: {
-        isMobile: isMobile
+        isMobile
       }
     }
   }

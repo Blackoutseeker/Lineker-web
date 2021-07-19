@@ -42,6 +42,22 @@ export default class MyDocument extends Document {
         <Head>
           <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
           <meta name="author" content="Felipe Pereira de Souza Silva" />
+          <meta
+            property="og:image"
+            content="https://raw.githubusercontent.com/Blackoutseeker/Lineker-web/main/src/assets/images/Lineker.png"
+          />
+          <meta
+            property="og:image:secure_url"
+            content="https://raw.githubusercontent.com/Blackoutseeker/Lineker-web/main/src/assets/images/Lineker.png"
+          />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:image:width" content="80" />
+          <meta property="og:image:height" content="80" />
+          <meta property="og:image:alt" content="Lineker" />
+          <meta
+            name="google-site-verification"
+            content="qcInr_iQhvACEAyh5tUOYy7n8OUdwOSjxqVxQOxWRN4"
+          />
         </Head>
         <body>
           <Main />

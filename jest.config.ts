@@ -85,6 +85,7 @@ export default {
     '@components/(.*)': '<rootDir>/src/components/$1',
     '@pages/(.*)': '<rootDir>/src/pages/$1',
     '@assets/(.*)': '<rootDir>/src/assets/$1',
+    '@store/(.*)': '<rootDir>/src/store/$1',
     '@utils/(.*)': '<rootDir>/src/utils/$1',
     '@services/(.*)': '<rootDir>/src/services/$1',
     '@styles/(.*)': '<rootDir>/src/styles/$1'
@@ -135,7 +136,7 @@ export default {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
+  // setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -159,7 +160,11 @@ export default {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/cypress'
+  ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],

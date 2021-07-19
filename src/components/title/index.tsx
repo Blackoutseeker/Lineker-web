@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import TitleText from './styles'
 
 interface TitleProps {
@@ -16,4 +16,4 @@ const Title: FC<TitleProps> = props => {
   )
 }
 
-export default memo(Title)
+export default Title

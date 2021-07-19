@@ -8,6 +8,11 @@ declare module 'styled-components' {
       background: string
       title: string
       placeholder: string
+      red: string
+      green: string
+      scrollThumb: string
+      scrollTrack: string
+      dismissButton: string
     }
     shadow: string
   }
