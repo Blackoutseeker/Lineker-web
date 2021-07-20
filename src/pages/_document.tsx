@@ -40,7 +40,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
           <meta name="author" content="Felipe Pereira de Souza Silva" />
           <meta
             property="og:image"

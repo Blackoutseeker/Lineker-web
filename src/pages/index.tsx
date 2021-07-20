@@ -36,6 +36,7 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
     <PageContainer>
       <Head>
         <title>Lineker</title>
+        <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#003B59" />
         <meta
