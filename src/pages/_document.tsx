@@ -54,10 +54,6 @@ export default class MyDocument extends Document {
           <meta property="og:image:width" content="80" />
           <meta property="og:image:height" content="80" />
           <meta property="og:image:alt" content="Lineker" />
-          <meta
-            name="google-site-verification"
-            content="qcInr_iQhvACEAyh5tUOYy7n8OUdwOSjxqVxQOxWRN4"
-          />
         </Head>
         <body>
           <Main />

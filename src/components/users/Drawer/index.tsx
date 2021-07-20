@@ -21,6 +21,7 @@ import PlusIcon from '@assets/icons/plus.svg'
 import CloseIcon from '@assets/icons/times.svg'
 import OutsideClickHandler from 'react-outside-click-handler'
 import firebase from '@utils/firebaseClient'
+import firebaseApp from 'firebase/app'
 import {
   encodeForDatabase,
   decodeFromDatabase
@@ -51,11 +52,13 @@ const Drawer: FC<DrawerProps> = ({
     setAddFilterInputValue('')
   }, [setShowDrawer])
 
-  const getFiltersFromDatabase = (snapshot: firebase.database.DataSnapshot) => {
+  const getFiltersFromDatabase = (
+    filters: firebaseApp.database.DataSnapshot
+  ) => {
     const getFilters: FilterItem[] = []
-    snapshot.forEach(snapshotchild => {
+    filters.forEach(filter => {
       getFilters.push({
-        filter: snapshotchild.val().filter
+        filter: filter.val().filter
       })
     })
     setFilters(getFilters)
@@ -84,9 +87,8 @@ const Drawer: FC<DrawerProps> = ({
     [currentFilter, navigateToCurrentFilter]
   )
 
-  const isValidFilter = addFilterInputValue !== ''
-
   const addNewFilter = async () => {
+    const isValidFilter = addFilterInputValue !== ''
     if (isValidFilter) {
       const encodedFilter = encodeForDatabase(addFilterInputValue)
       await firebase

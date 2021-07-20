@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { FC, useCallback, memo } from 'react'
 import { QrModalHolder, QrContent } from './styles'
 import QrCode from 'qrcode.react'
 import OutsideClickHandler from 'react-outside-click-handler'
@@ -32,4 +32,4 @@ const QrModal: FC<QrModalProps> = ({ qrModalUrl, setQrModalUrl }) => {
   )
 }
 
-export default QrModal
+export default memo(QrModal)

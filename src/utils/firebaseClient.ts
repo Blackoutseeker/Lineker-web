@@ -22,8 +22,6 @@ const config: FirebaseConfig = {
   appId: process.env.APP_ID!
 }
 
-if (typeof window !== 'undefined' && !firebase.apps.length) {
-  firebase.initializeApp(config)
-}
-
-export default firebase
+export default !firebase.apps.length
+  ? firebase.initializeApp(config)
+  : firebase.app()

@@ -19,6 +19,7 @@ import LinekerLogo from '@assets/images/Lineker.png'
 import MessageBox, { BoxTypes } from '@components/login/MessageBox'
 import ReCAPTCHA from 'react-google-recaptcha'
 import firebase from '@utils/firebaseClient'
+import firebaseApp from 'firebase/app'
 
 const Form: FC = () => {
   const router = useRouter()
@@ -71,7 +72,7 @@ const Form: FC = () => {
   }
 
   const handleFirebaseAuthMethodsPromises = async (
-    firebaseAuthMethod: Promise<firebase.auth.UserCredential>,
+    firebaseAuthMethod: Promise<firebaseApp.auth.UserCredential>,
     insertUserIntoDatabase?: boolean
   ) => {
     await firebaseAuthMethod
@@ -93,7 +94,7 @@ const Form: FC = () => {
   }
 
   const signInWithGoogle = () => {
-    const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
+    const googleAuthProvider = new firebaseApp.auth.GoogleAuthProvider()
     handleFirebaseAuthMethodsPromises(
       firebase.auth().signInWithPopup(googleAuthProvider),
       true

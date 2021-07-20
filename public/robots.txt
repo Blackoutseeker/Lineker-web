@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /users/
+
+Sitemap: https://lineker.vercel.app/api/sitemap

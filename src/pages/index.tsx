@@ -38,6 +38,17 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
         <title>Lineker</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#003B59" />
+        <meta
+          name="keywords"
+          content="lineker, link, links, url, filters, access, 
+          devices, manage, desktop, smartphone"
+        />
+        <meta
+          name="description"
+          content="Lineker allows you to manage links between your desktop
+          and smartphone in real time, creating and deleting them at any time. You
+          can also create filters to organize your links."
+        />
       </Head>
       <TitleContent>
         <Title size={40} />
@@ -56,11 +67,17 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
             <ButtonText>Get Started</ButtonText>
           </SignInButton>
         </Link>
-        <SourceCodeButton href={'https://github.com/Blackoutseeker'}>
+        <SourceCodeButton
+          href={'https://github.com/Blackoutseeker/Lineker-web'}
+          target={'_blank'}
+        >
           <ButtonText>Source Code</ButtonText>
         </SourceCodeButton>
       </ButtonContent>
-      <StoreContent href={'https://github.com/Blackoutseeker'}>
+      <StoreContent
+        href={'https://github.com/Blackoutseeker/Lineker-mobile/releases'}
+        target={'_blank'}
+      >
         <Image src={Google} alt={'Play Store'} width={240} height={92.88} />
       </StoreContent>
       <Description>

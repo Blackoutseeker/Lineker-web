@@ -7,7 +7,10 @@ const Footer: FC = () => {
   return (
     <FooterContainer>
       <FooterText>© 2021 Felipe Pereira de Souza Silva</FooterText>
-      <ImageContent href={'https://github.com/Blackoutseeker'}>
+      <ImageContent
+        href={'https://github.com/Blackoutseeker/Lineker-mobile/releases'}
+        target={'_blank'}
+      >
         <Image src={Google} alt={'Play Store'} width={180.88} height={70} />
       </ImageContent>
     </FooterContainer>

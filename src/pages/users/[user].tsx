@@ -8,6 +8,7 @@ import nookies from 'nookies'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
 import firebaseClient from '@utils/firebaseClient'
+import firebaseApp from 'firebase/app'
 import { decodeFromDatabase } from '@utils/databaseCodification'
 import Head from 'next/head'
 import PageContainer from '@components/PageContainer'
@@ -25,9 +26,10 @@ const QrModal = dynamic(() => import('@components/users/QrModal'))
 
 interface UserProps {
   currentFilter: string
+  preLoadedLinks: LinkItem[] | null
 }
 
-const User: NextPage<UserProps> = ({ currentFilter }) => {
+const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
   const auth = useAuth()
   const dispatch = useDispatch()
   const [searchInputValue, setSearchInputValue] = useState<string>('')
@@ -35,22 +37,22 @@ const User: NextPage<UserProps> = ({ currentFilter }) => {
   const [showAddLinkModal, setShowAddLinkModal] = useState<boolean>(false)
   const [deleteLinkDatetime, setDeleteLinkDatetime] = useState<string>('')
   const [qrModalUrl, setQrModalUrl] = useState<string>('')
-  const [links, setLinks] = useState<LinkItem[] | null>(null)
+  const [links, setLinks] = useState<LinkItem[] | null>(preLoadedLinks)
 
   const getLinksFromDatabase = useCallback(
-    (users: firebaseClient.database.DataSnapshot) => {
-      const hasLinksNode = users.hasChild('links')
+    (user: firebaseApp.database.DataSnapshot) => {
+      const hasLinksNode = user.hasChild('links')
       if (hasLinksNode) {
-        const links = users.child('links')
+        const links = user.child('links')
         const hasLinksToCurrentFilter = links.hasChild(currentFilter)
         if (hasLinksToCurrentFilter) {
           const getLinks: LinkItem[] = []
-          links.child(currentFilter).forEach(linkItem => {
+          links.child(currentFilter).forEach(link => {
             getLinks.push({
-              title: linkItem.val().title,
-              url: linkItem.val().url,
-              date: linkItem.val().date,
-              datetime: linkItem.val().datetime
+              title: link.val().title,
+              url: link.val().url,
+              date: link.val().date,
+              datetime: link.val().datetime
             })
           })
           setLinks(getLinks)
@@ -99,7 +101,6 @@ const User: NextPage<UserProps> = ({ currentFilter }) => {
 
     return () => {
       databaseRef.off('value', getLinksFromDatabase)
-      setLinks(null)
       setSearchInputValue('')
     }
   }, [loadTheme, auth?.user, getLinksFromDatabase])
@@ -156,11 +157,40 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
 ) => {
   try {
     const currentFilter = context.query?.currentFilter?.toString() ?? 'Default'
+
     const cookies = nookies.get(context)
-    await firebaseAdmin.auth().verifyIdToken(cookies.token)
+    const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
+
+    let preLoadedLinks: LinkItem[] | null = []
+    await firebaseClient
+      .database()
+      .ref(`users/${token.uid}`)
+      .once('value', user => {
+        const hasLinksNode = user.hasChild('links')
+        if (hasLinksNode) {
+          const links = user.child('links')
+          const hasLinksToCurrentFilter = links.hasChild(currentFilter)
+          if (hasLinksToCurrentFilter) {
+            links.child(currentFilter).forEach(link => {
+              preLoadedLinks!.push({
+                title: link.val().title,
+                url: link.val().url,
+                date: link.val().date,
+                datetime: link.val().datetime
+              })
+            })
+          } else {
+            preLoadedLinks = null
+          }
+        } else {
+          preLoadedLinks = null
+        }
+      })
+
     return {
       props: {
-        currentFilter
+        currentFilter,
+        preLoadedLinks
       }
     }
   } catch (_) {

@@ -21,7 +21,7 @@ const StoreContent: FC<StoreContentProps> = props => {
 
   return (
     <Content side={sideToBePositioned}>
-      <a href={mobileAppUrl}>
+      <a href={mobileAppUrl} rel={'noreferrer'} target={'_blank'}>
         <Image
           src={storeName === 'App Store' ? Apple : Google}
           alt={storeName}

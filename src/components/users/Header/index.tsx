@@ -60,7 +60,8 @@ const Header: FC<HeaderProps> = ({
       .auth()
       .signOut()
       .then(() => {
-        dispatch(setTheme(false))
+        const lightTheme = false
+        dispatch(setTheme(lightTheme))
         navigateToHomepage()
       })
   }
