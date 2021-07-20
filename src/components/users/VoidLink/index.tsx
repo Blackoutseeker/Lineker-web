@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import Image from 'next/image'
 import { Content, Text } from './styles'
-import DrawerImg from '@assets/images/drawer.svg'
+import DrawerImg from '@assets/images/Drawer.svg'
 
 const VoidLink: FC = () => {
   return (
