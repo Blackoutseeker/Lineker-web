@@ -109,6 +109,11 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
     <PageContainer>
       <Head>
         <title>{decodeFromDatabase(currentFilter)} - Lineker</title>
+        <link
+          rel="shortcut icon"
+          href="../../Lineker.ico"
+          type="image/x-icon"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Header
