@@ -110,10 +110,10 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
 ) => {
   try {
     const cookies = nookies.get(context)
-    const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
+    await firebaseAdmin.auth().verifyIdToken(cookies.token)
     return {
       redirect: {
-        destination: `users/${token.uid}?currentFilter=Default`,
+        destination: '/user?currentFilter=Default',
         permanent: false
       }
     }

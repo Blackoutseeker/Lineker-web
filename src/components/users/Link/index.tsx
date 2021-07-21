@@ -52,7 +52,7 @@ const Link: FC<LinkProps> = props => {
 
   return (
     <LinkContainer>
-      <Button onClick={showQrModal}>
+      <Button onClick={showQrModal} title={'See Qr Code'}>
         <QrCode
           value={url}
           size={75}

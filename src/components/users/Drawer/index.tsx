@@ -68,14 +68,14 @@ const Drawer: FC<DrawerProps> = ({
     async (currentFilter: string) => {
       await router
         .push({
-          pathname: `/users/${auth!.user!.uid}`,
+          pathname: '/user',
           query: {
             currentFilter
           }
         })
         .then(hideDrawer)
     },
-    [router, auth, hideDrawer]
+    [router, hideDrawer]
   )
 
   const setCurrentFilter = useCallback(
@@ -171,7 +171,10 @@ const Drawer: FC<DrawerProps> = ({
             </AddButton>
           </ItemContent>
           {filters.map((item: FilterItem, index: number) => (
-            <FilterContent key={index}>
+            <FilterContent
+              className={item.filter === currentFilter ? 'current-filter' : ''}
+              key={index}
+            >
               <FilterButton
                 onClick={() => {
                   setCurrentFilter(item.filter)

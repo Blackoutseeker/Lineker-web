@@ -1,12 +1,11 @@
 describe('Testing login for success', () => {
   // pages
   const loginPageUrl = 'http://localhost:3000/login'
-  const usersPageUrl = 'http://localhost:3000/users/'
+  const userPageUrl = 'http://localhost:3000/user?currentFilter=Default'
 
   // global variables
   const realUserEmail: string = Cypress.env('email')
   const realUserPassword: string = Cypress.env('password')
-  const realUserId: string = Cypress.env('uid')
 
   // DOM elements
   const emailInput = () => cy.getElementByDataCy('email-input')
@@ -18,14 +17,9 @@ describe('Testing login for success', () => {
   }
 
   it('Should redirect user from login page to user page', () => {
-    cy.clearLocalStorage()
-    cy.clearCookies()
     cy.visit(loginPageUrl)
-
-    const uniquePageGeneratedForUser =
-      usersPageUrl + realUserId + '?currentFilter=Default'
-
     fillFormAndLogin(realUserEmail, realUserPassword)
-    cy.url().should('equal', uniquePageGeneratedForUser)
+
+    cy.url().should('equal', userPageUrl)
   })
 })

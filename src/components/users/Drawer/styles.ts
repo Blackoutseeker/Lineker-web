@@ -30,6 +30,10 @@ export const DrawerContainer = styled.div`
   ::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.colors.scrollTrack};
   }
+  .current-filter {
+    background-color: ${({ theme }) => theme.colors.secundary};
+    box-shadow: ${({ theme }) => theme.shadow};
+  }
 `
 
 export const ItemContent = styled.div`

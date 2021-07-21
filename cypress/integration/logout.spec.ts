@@ -12,14 +12,15 @@ describe('Testing sign out system', () => {
   const passwordInput = () => cy.getElementByDataCy('password-input')
   const signOutButton = () => cy.getElementByDataCy('signout-button')
 
-  const fillForm = () => {
-    cy.visit(loginPageUrl)
-    emailInput().type(realUserEmail)
-    passwordInput().type(`${realUserPassword}{enter}`)
+  const fillFormAndLogin = (email: string, password: string) => {
+    emailInput().type(email)
+    passwordInput().type(`${password}{enter}`)
   }
 
   it('Should sign out and redirect the user to the home page', () => {
-    fillForm()
+    cy.visit(loginPageUrl)
+    fillFormAndLogin(realUserEmail, realUserPassword)
+
     signOutButton().click()
     cy.url().should('equal', homePageUrl)
   })
