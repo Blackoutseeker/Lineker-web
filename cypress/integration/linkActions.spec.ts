@@ -18,13 +18,12 @@ describe('Testing the "Link" component and its actions', () => {
     cy.getElementByDataCy(`delete-${title}`)
   const confirmButton = () => cy.getElementByDataCy('confirm-button')
 
-  // actions
-  const fillForm = () => {
-    cy.visit(loginPageUrl)
-    emailInput().type(realUserEmail)
-    passwordInput().type(`${realUserPassword}{enter}`)
+  const fillFormAndLogin = (email: string, password: string) => {
+    emailInput().type(email)
+    passwordInput().type(`${password}{enter}`)
   }
 
+  // actions
   const createNewLink = (title: string, url: string) => {
     floatingActionButton().click()
     titleInput().type(title)
@@ -42,10 +41,12 @@ describe('Testing the "Link" component and its actions', () => {
   }
 
   it('Should create a new link, copy its url to clipboard and delete it', () => {
+    cy.visit(loginPageUrl)
+    fillFormAndLogin(realUserEmail, realUserPassword)
+
     const title = 'Flutter'
     const url = 'https://flutter.dev'
 
-    fillForm()
     createNewLink(title, url)
     copyToClipboard(title, url)
     deleteLink(title)

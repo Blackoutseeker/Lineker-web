@@ -12,11 +12,14 @@ describe('Testing filter creation', () => {
   const drawerButton = () => cy.getElementByDataCy('drawer-button')
   const addFilterInput = () => cy.getElementByDataCy('add-filter-input')
 
+  const fillFormAndLogin = (email: string, password: string) => {
+    emailInput().type(email)
+    passwordInput().type(`${password}{enter}`)
+  }
+
   it('Should create a new filter and set it as current filter', () => {
     cy.visit(loginPageUrl)
-
-    emailInput().type(realUserEmail)
-    passwordInput().type(`${realUserPassword}{enter}`)
+    fillFormAndLogin(realUserEmail, realUserPassword)
 
     const newFilter = 'NodeJS'
     drawerButton().click()

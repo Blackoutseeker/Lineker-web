@@ -17,6 +17,11 @@ describe('Testing theme change on user page', () => {
     LIGHT = 'rgb(0, 88, 132)'
   }
 
+  const fillFormAndLogin = (email: string, password: string) => {
+    emailInput().type(email)
+    passwordInput().type(`${password}{enter}`)
+  }
+
   const checkBodyBackgroundColor = (
     themeBackgroundColor: ThemeBackgroundColors
   ) => {
@@ -24,12 +29,9 @@ describe('Testing theme change on user page', () => {
   }
 
   it("Should use light theme by default when user's logged in, and dark theme when the user click in the switch button", () => {
-    cy.clearLocalStorage()
-    cy.clearCookies()
     cy.visit(loginPageUrl)
 
-    emailInput().type(realUserEmail)
-    passwordInput().type(`${realUserPassword}{enter}`)
+    fillFormAndLogin(realUserEmail, realUserPassword)
 
     checkBodyBackgroundColor(ThemeBackgroundColors.LIGHT)
     switchButton().click()

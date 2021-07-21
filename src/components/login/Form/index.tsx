@@ -41,9 +41,9 @@ const Form: FC = () => {
     }, 4000)
   }
 
-  const navigateToUserPage = (uid: string) => {
+  const navigateToUserPage = () => {
     router.push({
-      pathname: `/users/${uid}`,
+      pathname: '/user',
       query: {
         currentFilter: 'Default'
       }
@@ -80,7 +80,7 @@ const Form: FC = () => {
         if (insertUserIntoDatabase) {
           await handleInsertUserIntoDatabase(user!.uid, user!.email!)
         }
-        navigateToUserPage(user!.uid)
+        navigateToUserPage()
       })
       .catch(({ message }: { message: string }) => {
         showMessageBox(BoxTypes.ERROR, message)

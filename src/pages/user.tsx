@@ -9,7 +9,10 @@ import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
 import firebaseClient from '@utils/firebaseClient'
 import firebaseApp from 'firebase/app'
-import { decodeFromDatabase } from '@utils/databaseCodification'
+import {
+  decodeFromDatabase,
+  encodeForDatabase
+} from '@utils/databaseCodification'
 import Head from 'next/head'
 import PageContainer from '@components/PageContainer'
 import Header from '@components/users/Header'
@@ -161,7 +164,8 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
   context: GetServerSidePropsContext
 ) => {
   try {
-    const currentFilter = context.query?.currentFilter?.toString() ?? 'Default'
+    const queryFilter = context.query?.currentFilter?.toString() ?? 'Default'
+    const currentFilter = encodeForDatabase(queryFilter)
 
     const cookies = nookies.get(context)
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)

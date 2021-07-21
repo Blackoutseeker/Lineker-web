@@ -35,6 +35,15 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
     setUrlInputValue('')
   }, [setShowAddLinkModal])
 
+  const createFilterIfNotExists = useCallback(async () => {
+    await firebase
+      .database()
+      .ref(`users/${auth.user!.uid}/filters/${currentFilter}`)
+      .set({
+        filter: currentFilter
+      })
+  }, [auth.user, currentFilter])
+
   const addNewLink = useCallback(async () => {
     if (urlInputValue !== '') {
       const date = format(new Date(), 'dd/MM/yyyy')
@@ -47,6 +56,7 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
         datetime
       }
 
+      await createFilterIfNotExists()
       await firebase
         .database()
         .ref(`users/${auth.user!.uid}/links/${currentFilter}/${datetime}`)
@@ -58,6 +68,7 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
     urlInputValue,
     auth.user,
     currentFilter,
+    createFilterIfNotExists,
     hideAddLinkModal
   ])
 
