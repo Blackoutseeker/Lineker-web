@@ -4,9 +4,9 @@ describe('Testing "loadTheme" method from "load" module', () => {
   const DARK_THEME = true
   const LIGHT_THEME = false
 
-  const simulateGettingThemeByCookie = (
-    themeLoadedByCookie: string | undefined
-  ) => () => themeLoadedByCookie
+  const simulateGettingThemeByCookie =
+    (themeLoadedByCookie: string | undefined) => () =>
+      themeLoadedByCookie
 
   const stringifyTheme = (themeToBeStringified: boolean): string =>
     String(themeToBeStringified)

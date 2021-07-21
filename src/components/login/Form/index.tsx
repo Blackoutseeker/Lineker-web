@@ -114,9 +114,8 @@ const Form: FC = () => {
     }
   }
 
-  const isValidEmail: boolean = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(
-    emailValue
-  )
+  const isValidEmail: boolean =
+    /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(emailValue)
   const isValidForm: boolean = isValidEmail && passwordValue.length >= 6
 
   const requestPasswordReset = async () => {
