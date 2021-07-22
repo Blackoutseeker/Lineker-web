@@ -1,4 +1,7 @@
+import { useEffect, useCallback } from 'react'
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
+import useAuth from '@services/auth'
 import isMobileDevice from '@services/device'
 import nookies from 'nookies'
 import firebaseAdmin from '@utils/firebaseAdmin'
@@ -32,6 +35,25 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ isMobile }) => {
+  const auth = useAuth()
+  const router = useRouter()
+
+  const navigateToUserPage = useCallback(() => {
+    router.push({
+      pathname: '/user',
+      query: {
+        currentFilter: 'Default'
+      }
+    })
+  }, [router])
+
+  useEffect(() => {
+    const isAuthenicated: boolean = auth.user !== null
+    if (isAuthenicated) {
+      navigateToUserPage()
+    }
+  }, [auth, navigateToUserPage])
+
   return (
     <PageContainer>
       <Head>
