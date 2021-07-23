@@ -35,3 +35,26 @@ describe('Testing "loadTheme" method from "load" module', () => {
     expect(themeLoaded).toEqual(LIGHT_THEME)
   })
 })
+
+describe('Testing "loadToken" method from "load" module', () => {
+  const simulateGettingTokenByCookie = (
+    tokenLoadedByCookie: string | undefined
+  ) => () => tokenLoadedByCookie
+
+  const getTokenLoaded = (TokenToBeLoaded: string | undefined): string => {
+    const getTokenByCookie = simulateGettingTokenByCookie(TokenToBeLoaded)
+    const tokenLoaded = load().loadToken(getTokenByCookie)
+    return tokenLoaded
+  }
+
+  test('Should return the same parameter if the token is a valid JWT', () => {
+    const token = '0mf92Nhaf7uP02nBgsoXCJ3Mqw77yu56'
+    const tokenLoaded = getTokenLoaded(token)
+    expect(tokenLoaded).toEqual(token)
+  })
+
+  test('Should return blank text if it is not possible to load the token from Cookies', () => {
+    const tokenLoaded = getTokenLoaded(undefined)
+    expect(tokenLoaded).toEqual('')
+  })
+})

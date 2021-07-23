@@ -38,3 +38,29 @@ describe('Testing the integration of the "loadTheme" from "load" module with the
     expect(themeLoaded).toEqual(LIGHT_THEME)
   })
 })
+
+describe('Testing the integration of the "loadToken" from "load" module with the "nookies" package', () => {
+  const TOKEN = 'Nyv7j8h3nzldgJG7uP02nBgsoXCJ3M9y3nVCCpaW'
+
+  // clear "token" cookie before each test
+  beforeEach(() => {
+    nookies.destroy(undefined, 'token')
+  })
+
+  test('Should load a valid JWT if nookies loads the token', () => {
+    nookies.set(undefined, 'token', TOKEN)
+
+    const getTokenByCookies = (): string | undefined =>
+      nookies.get(undefined).token
+    const tokenLoaded = load().loadToken(getTokenByCookies)
+
+    expect(tokenLoaded).toEqual(TOKEN)
+  })
+
+  test("Should return blank text if nookies didn't load a token", () => {
+    const getTokenByCookies = (): string | undefined =>
+      nookies.get(undefined).token
+    const tokenLoaded = load().loadToken(getTokenByCookies)
+    expect(tokenLoaded).toBe('')
+  })
+})
