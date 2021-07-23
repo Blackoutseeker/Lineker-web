@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
   position: sticky;
+  top: 0;
   width: 100%;
   height: 60px;
   display: flex;
@@ -10,6 +11,7 @@ export const HeaderContainer = styled.header`
   padding: 0 40px;
   background-color: ${({ theme }) => theme.colors.primary};
   box-shadow: ${({ theme }) => theme.shadow};
+  z-index: 1;
   @media screen and (max-width: 640px) {
     padding: 0;
   }
