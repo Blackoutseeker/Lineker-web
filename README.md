@@ -6,7 +6,7 @@
 
 </p>
 
-![version](https://img.shields.io/badge/Version-1.0.3-003B59)
+![version](https://img.shields.io/badge/Version-1.0.4-003B59)
 ![ReactJS](https://img.shields.io/badge/ReactJS-17.0.2-61dafb)
 ![NextJS](https://img.shields.io/badge/NextJS-11.0.1-black)
 ![typescript](https://img.shields.io/badge/TypeScript-4.3.4-3178c6)
