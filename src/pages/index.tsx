@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import useAuth from '@services/auth'
 import isMobileDevice from '@services/device'
 import nookies from 'nookies'
+import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -131,8 +132,12 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
   context: GetServerSidePropsContext
 ) => {
   try {
-    const cookies = nookies.get(context)
-    await firebaseAdmin.auth().verifyIdToken(cookies.token)
+    const getTokenFromCookie = (): string | undefined => {
+      const token = nookies.get(context).token
+      return token
+    }
+    const tokenLoaded = load().loadToken(getTokenFromCookie)
+    await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
     return {
       redirect: {
         destination: '/user?currentFilter=Default',

@@ -10,15 +10,23 @@ const AuthContext = createContext<{ user: firebaseApp.User | null }>({
 export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<firebaseApp.User | null>(null)
 
+  const saveTokenByCookie = (token: string) => {
+    nookies.set(undefined, 'token', token, { path: '/' })
+  }
+
+  const deleteTokenFromCookie = () => {
+    nookies.set(undefined, 'token', '', { path: '/' })
+  }
+
   useEffect(() => {
     return firebaseClient.auth().onIdTokenChanged(async user => {
       if (!user) {
         setUser(null)
-        nookies.set(undefined, 'token', '', { path: '/' })
+        deleteTokenFromCookie()
       } else {
         await user.getIdToken().then(token => {
           setUser(user)
-          nookies.set(undefined, 'token', token, { path: '/' })
+          saveTokenByCookie(token)
         })
       }
     })

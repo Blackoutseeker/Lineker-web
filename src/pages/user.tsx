@@ -112,11 +112,7 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
     <PageContainer>
       <Head>
         <title>{decodeFromDatabase(currentFilter)} - Lineker</title>
-        <link
-          rel="shortcut icon"
-          href="../../Lineker.ico"
-          type="image/x-icon"
-        />
+        <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Header
@@ -167,13 +163,17 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
     const queryFilter = context.query?.currentFilter?.toString() ?? 'Default'
     const currentFilter = encodeForDatabase(queryFilter)
 
-    const cookies = nookies.get(context)
-    const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
+    const getTokenFromCookie = () => {
+      const token = nookies.get(context).token
+      return token
+    }
+    const tokenLoaded = load().loadToken(getTokenFromCookie)
+    const decodedIdToken = await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
 
     let preLoadedLinks: LinkItem[] | null = []
     await firebaseClient
       .database()
-      .ref(`users/${token.uid}`)
+      .ref(`users/${decodedIdToken.uid}`)
       .once('value', user => {
         const hasLinksNode = user.hasChild('links')
         if (hasLinksNode) {
