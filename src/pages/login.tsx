@@ -1,6 +1,5 @@
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import isMobileDevice from '@services/device'
-import nookies from 'nookies'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
 import Head from 'next/head'
@@ -47,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   try {
     const getTokenFromCookie = () => {
-      const token = nookies.get(context).token
+      const token = context.req.cookies.token
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)

@@ -164,7 +164,7 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
     const currentFilter = encodeForDatabase(queryFilter)
 
     const getTokenFromCookie = () => {
-      const token = nookies.get(context).token
+      const token = context.req.cookies.token
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
