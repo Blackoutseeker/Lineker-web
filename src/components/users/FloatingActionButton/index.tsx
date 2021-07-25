@@ -15,7 +15,11 @@ const FloatingActionButton: FC<FloatingActionButtonProps> = ({
   }, [setShowAddLinkModal])
 
   return (
-    <Button onClick={showAddLinkModal} data-cy={'floating-action-button'}>
+    <Button
+      onClick={showAddLinkModal}
+      title={'Add New Link'}
+      data-cy={'floating-action-button'}
+    >
       <Image src={Plus} alt={'Add Link'} width={20} height={20} />
     </Button>
   )
