@@ -40,6 +40,11 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <script
+            data-ad-client="ca-pub-8834567925593683"
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          ></script>
           <meta name="author" content="Felipe Pereira de Souza Silva" />
           <meta
             property="og:image"
