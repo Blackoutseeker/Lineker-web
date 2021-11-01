@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { StoreState } from '@store/index'
 import { setTheme } from '@store/ducks/theme'
-import nookies from 'nookies'
+import { setCookie, destroyCookie } from 'nookies'
 import Image from 'next/image'
 import {
   HeaderContainer,
@@ -44,7 +44,10 @@ const Header: FC<HeaderProps> = ({
 
   const switchTheme = () => {
     const saveTheme = (theme: boolean) => {
-      nookies.set(undefined, 'theme', String(theme))
+      setCookie(undefined, 'theme', String(theme), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 30 // 30 days
+      })
     }
     const themeToBeSetted = !theme
     dispatch(setTheme(themeToBeSetted, saveTheme))
@@ -55,7 +58,7 @@ const Header: FC<HeaderProps> = ({
   }
 
   const signOut = async () => {
-    nookies.destroy(undefined, 'theme')
+    destroyCookie(undefined, 'theme')
     await firebase
       .auth()
       .signOut()

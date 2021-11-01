@@ -40,7 +40,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
             href="https://fonts.gstatic.com"
@@ -50,11 +49,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
             rel="stylesheet"
           />
-          <script
-            data-ad-client="ca-pub-8834567925593683"
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          ></script>
+          <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
           <meta name="author" content="Felipe Pereira de Souza Silva" />
           <meta
             property="og:image"

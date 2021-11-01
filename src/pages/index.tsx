@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react'
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import useAuth from '@services/auth'
+import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
@@ -58,8 +59,6 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
     <PageContainer>
       <Head>
         <title>Lineker</title>
-        <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#003B59" />
         <meta
           name="keywords"
@@ -132,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
 ) => {
   try {
     const getTokenFromCookie = (): string | undefined => {
-      const token = context.req.cookies.token
+      const token = parseCookies(context).token
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)

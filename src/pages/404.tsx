@@ -7,8 +7,6 @@ const Page404: NextPage = () => {
     <TextsContainer>
       <Head>
         <title>Page not found</title>
-        <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <ErrorTitle>Error 404</ErrorTitle>
       <ErrorTitle>Page not found (Ironic, isn&apos;t it?)</ErrorTitle>

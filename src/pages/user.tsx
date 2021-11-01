@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { setTheme } from '@store/ducks/theme'
 import useAuth from '@services/auth'
 import dynamic from 'next/dynamic'
-import nookies from 'nookies'
+import { parseCookies } from 'nookies'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
 import firebaseClient from '@utils/firebaseClient'
@@ -70,8 +70,7 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
   )
 
   const loadTheme = useCallback(() => {
-    const getThemeByCookie = (): string | undefined =>
-      nookies.get(undefined).theme
+    const getThemeByCookie = (): string | undefined => parseCookies().theme
     const loadedTheme = load().loadTheme(getThemeByCookie)
     dispatch(setTheme(loadedTheme))
   }, [dispatch])
@@ -112,8 +111,6 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
     <PageContainer>
       <Head>
         <title>{decodeFromDatabase(currentFilter)} - Lineker</title>
-        <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Header
         searchInputValue={searchInputValue}
@@ -164,7 +161,7 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
     const currentFilter = encodeForDatabase(queryFilter)
 
     const getTokenFromCookie = () => {
-      const token = context.req.cookies.token
+      const token = parseCookies(context).token
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)

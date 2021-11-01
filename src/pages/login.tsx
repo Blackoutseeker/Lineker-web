@@ -1,4 +1,5 @@
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
@@ -12,8 +13,6 @@ const Login: NextPage = () => {
     <Container>
       <Head>
         <title>Login - Lineker</title>
-        <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           name="keywords"
           content="lineker, link, links, url, filters, access, login, signin, account"
@@ -46,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   try {
     const getTokenFromCookie = () => {
-      const token = context.req.cookies.token
+      const token = parseCookies(context).token
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
