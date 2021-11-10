@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }: any) => {
   const saveTokenByCookie = (token: string) => {
     setCookie(undefined, 'token', token, {
       path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
       maxAge: 60 * 60 * 24 * 30 // 30 days
     })
   }
