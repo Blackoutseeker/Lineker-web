@@ -97,7 +97,9 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
         </SourceCodeButton>
       </ButtonContent>
       <StoreContent
-        href={'https://github.com/Blackoutseeker/Lineker-mobile/releases'}
+        href={
+          'https://play.google.com/store/apps/details?id=com.FelipsTudio.lineker'
+        }
         target={'_blank'}
       >
         <Image src={Google} alt={'Play Store'} width={240} height={92.88} />

@@ -8,7 +8,9 @@ const Footer: FC = () => {
     <FooterContainer>
       <FooterText>© 2021 Felipe Pereira de Souza Silva</FooterText>
       <ImageContent
-        href={'https://github.com/Blackoutseeker/Lineker-mobile/releases'}
+        href={
+          'https://play.google.com/store/apps/details?id=com.FelipsTudio.lineker'
+        }
         target={'_blank'}
       >
         <Image src={Google} alt={'Play Store'} width={180.88} height={70} />

@@ -32,7 +32,7 @@ const Login: NextPage = () => {
       <StoreContent
         storeName={'Play Store'}
         mobileAppUrl={
-          'https://github.com/Blackoutseeker/Lineker-mobile/releases'
+          'https://play.google.com/store/apps/details?id=com.FelipsTudio.lineker'
         }
         sideToBePositioned={'right'}
       />
