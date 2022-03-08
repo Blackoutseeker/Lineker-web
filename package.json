@@ -24,7 +24,7 @@
     "date-fns": "^2.22.1",
     "firebase": "^8.4.1",
     "firebase-admin": "^9.9.0",
-    "next": "^12.0.2",
+    "next": "^12.1.0",
     "nookies": "^2.5.2",
     "qrcode.react": "^1.0.1",
     "react": "17.0.2",
