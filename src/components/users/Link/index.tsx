@@ -51,7 +51,7 @@ const Link: FC<LinkProps> = props => {
   }, [setQrModalUrl, url])
 
   return (
-    <LinkContainer>
+    <LinkContainer data-cy={`${title}-link`}>
       <Button onClick={showQrModal} title={'See Qr Code'}>
         <QrCode
           value={url}
