@@ -8,6 +8,7 @@ import { parseCookies } from 'nookies'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
 import firebaseClient from '@utils/firebaseClient'
+import { Pages } from '@utils/constants'
 import firebaseApp from 'firebase/app'
 import {
   decodeFromDatabase,
@@ -202,7 +203,7 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
   } catch (_) {
     return {
       redirect: {
-        destination: '/',
+        destination: Pages.HOME,
         permanent: false
       }
     }

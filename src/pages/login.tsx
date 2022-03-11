@@ -3,6 +3,7 @@ import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
+import { Pages } from '@utils/constants'
 import Head from 'next/head'
 import Container from '@components/login/Container'
 import StoreContent from '@components/login/StoreContent'
@@ -52,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (
     await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
     return {
       redirect: {
-        destination: '/user?currentFilter=Default',
+        destination: Pages.USER,
         permanent: false
       }
     }
@@ -61,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (
     if (isMobile) {
       return {
         redirect: {
-          destination: '/',
+          destination: Pages.HOME,
           permanent: true
         }
       }

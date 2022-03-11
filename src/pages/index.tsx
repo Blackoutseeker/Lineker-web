@@ -6,6 +6,7 @@ import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
 import firebaseAdmin from '@utils/firebaseAdmin'
+import { Pages } from '@utils/constants'
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -40,12 +41,7 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
   const router = useRouter()
 
   const navigateToUserPage = useCallback(() => {
-    router.push({
-      pathname: '/user',
-      query: {
-        currentFilter: 'Default'
-      }
-    })
+    router.push(Pages.USER)
   }, [router])
 
   useEffect(() => {
@@ -140,7 +136,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
     await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
     return {
       redirect: {
-        destination: '/user?currentFilter=Default',
+        destination: Pages.USER,
         permanent: false
       }
     }
