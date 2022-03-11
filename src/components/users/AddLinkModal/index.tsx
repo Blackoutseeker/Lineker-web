@@ -1,7 +1,6 @@
 import { FC, useCallback, useState } from 'react'
 import { format } from 'date-fns'
 import useAuth from '@services/auth'
-import Image from 'next/image'
 import { LinkItem } from '../Link'
 import {
   AddLinkModalHolder,
@@ -11,7 +10,7 @@ import {
   AddLinkButton
 } from './styles'
 import OutsideClickHandler from 'react-outside-click-handler'
-import PlusIcon from '@assets/icons/plus.svg'
+import { HiPlus } from 'react-icons/hi'
 import firebase from '@utils/firebaseClient'
 
 interface AddLinkModalProps {
@@ -110,7 +109,7 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
               data-cy={'url-input'}
             />
             <AddLinkButton onClick={addNewLink}>
-              <Image src={PlusIcon} alt={'Add Link'} width={20} height={20} />
+              <HiPlus color={'#fff'} size={25} />
             </AddLinkButton>
           </ContentRow>
         </AddModal>

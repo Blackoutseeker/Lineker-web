@@ -1,7 +1,6 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import useAuth from '@services/auth'
-import Image from 'next/image'
 import {
   BackButton,
   BackContent,
@@ -16,9 +15,8 @@ import {
   FilterButtonText,
   DeleteFilterButton
 } from './styles'
-import ArrowLeftIcon from '@assets/icons/arrow_left.svg'
-import PlusIcon from '@assets/icons/plus.svg'
-import CloseIcon from '@assets/icons/times.svg'
+import { HiOutlineArrowLeft, HiPlus } from 'react-icons/hi'
+import { IoMdClose } from 'react-icons/io'
 import OutsideClickHandler from 'react-outside-click-handler'
 import firebase from '@utils/firebaseClient'
 import firebaseApp from 'firebase/app'
@@ -146,12 +144,7 @@ const Drawer: FC<DrawerProps> = ({
           <ItemContent>
             <BackContent>
               <BackButton onClick={hideDrawer} title={'Hide Drawer'}>
-                <Image
-                  src={ArrowLeftIcon}
-                  alt={'Hide Drawer'}
-                  width={25}
-                  height={25}
-                />
+                <HiOutlineArrowLeft color={'#fff'} size={25} />
               </BackButton>
             </BackContent>
             <HeaderTitle>Filters</HeaderTitle>
@@ -167,7 +160,7 @@ const Drawer: FC<DrawerProps> = ({
               data-cy={'add-filter-input'}
             />
             <AddButton onClick={addNewFilter} title={'Add Filter'}>
-              <Image src={PlusIcon} alt={'Add Filter'} width={15} height={15} />
+              <HiPlus color={'#fff'} size={20} />
             </AddButton>
           </ItemContent>
           {filters.map((item: FilterItem, index: number) => (
@@ -192,12 +185,7 @@ const Drawer: FC<DrawerProps> = ({
                   }}
                   title={'Delete Filter'}
                 >
-                  <Image
-                    src={CloseIcon}
-                    alt={'Delete Filter'}
-                    width={15}
-                    height={15}
-                  />
+                  <IoMdClose color={'#fff'} size={20} />
                 </DeleteFilterButton>
               ) : null}
             </FilterContent>

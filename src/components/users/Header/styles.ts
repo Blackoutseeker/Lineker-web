@@ -12,7 +12,7 @@ export const HeaderContainer = styled.header`
   background-color: ${({ theme }) => theme.colors.primary};
   box-shadow: ${({ theme }) => theme.shadow};
   z-index: 1;
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 740px) {
     padding: 0;
   }
 `

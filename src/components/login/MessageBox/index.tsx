@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
-import Image from 'next/image'
 import { BoxContainer, MessageContent, MessageText, IconBox } from './styles'
-import WarnIcon from '@assets/icons/warn.svg'
+import { AiFillWarning } from 'react-icons/ai'
 
 export enum BoxTypes {
   ERROR = 'error-box',
@@ -26,7 +25,7 @@ const MessageBox: FC<MessageBoxProps> = ({ boxType, message }) => {
         <MessageText>{message}</MessageText>
       </MessageContent>
       <IconBox>
-        <Image src={WarnIcon} alt={'Warning'} />
+        <AiFillWarning color={'#fff'} size={35} />
       </IconBox>
     </BoxContainer>
   )

@@ -1,5 +1,4 @@
-import { FC, useCallback, memo } from 'react'
-import Image from 'next/image'
+import { FC, memo } from 'react'
 import {
   LinkContainer,
   Button,
@@ -13,8 +12,7 @@ import {
   DateText
 } from './styles'
 import QrCode from 'qrcode.react'
-import CopyIcon from '@assets/icons/copy.svg'
-import DeleteIcon from '@assets/icons/delete.svg'
+import { FaCopy, FaTrash } from 'react-icons/fa'
 
 export interface LinkItem {
   title: string
@@ -38,17 +36,17 @@ const Link: FC<LinkProps> = props => {
     setQrModalUrl
   } = props
 
-  const copyToClipboard = useCallback(async () => {
+  const copyToClipboard = async () => {
     await navigator.clipboard.writeText(url)
-  }, [url])
+  }
 
-  const showDeleteConfirmation = useCallback(() => {
+  const showDeleteConfirmation = () => {
     setDeleteLinkDatetime(datetime)
-  }, [setDeleteLinkDatetime, datetime])
+  }
 
-  const showQrModal = useCallback(() => {
+  const showQrModal = () => {
     setQrModalUrl(url)
-  }, [setQrModalUrl, url])
+  }
 
   return (
     <LinkContainer data-cy={`${title}-link`}>
@@ -81,19 +79,14 @@ const Link: FC<LinkProps> = props => {
         title={'Copy To Clipboard'}
         data-cy={`copy-${title}`}
       >
-        <Image
-          src={CopyIcon}
-          alt={'Copy To Clipboard'}
-          width={25.91}
-          height={30}
-        />
+        <FaCopy color={'#fff'} size={25} />
       </Button>
       <DeleteButton
         onClick={showDeleteConfirmation}
         title={'Delete Link'}
         data-cy={`delete-${title}`}
       >
-        <Image src={DeleteIcon} alt={'Delete Link'} width={23.33} height={30} />
+        <FaTrash color={'#fff'} size={25} />
       </DeleteButton>
     </LinkContainer>
   )

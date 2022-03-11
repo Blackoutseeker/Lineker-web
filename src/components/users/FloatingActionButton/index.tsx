@@ -1,7 +1,6 @@
 import { FC, useCallback, memo } from 'react'
-import Image from 'next/image'
 import { Button } from './styles'
-import Plus from '@assets/icons/plus.svg'
+import { HiPlus } from 'react-icons/hi'
 
 interface FloatingActionButtonProps {
   setShowAddLinkModal: (value: boolean) => void
@@ -20,7 +19,7 @@ const FloatingActionButton: FC<FloatingActionButtonProps> = ({
       title={'Add New Link'}
       data-cy={'floating-action-button'}
     >
-      <Image src={Plus} alt={'Add Link'} width={20} height={20} />
+      <HiPlus color={'#fff'} size={25} />
     </Button>
   )
 }

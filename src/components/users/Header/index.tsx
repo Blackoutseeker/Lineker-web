@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { StoreState } from '@store/index'
 import { setTheme } from '@store/ducks/theme'
 import { setCookie, destroyCookie } from 'nookies'
-import Image from 'next/image'
 import {
   HeaderContainer,
   Button,
@@ -18,9 +17,8 @@ import {
   SwitchThumb
 } from './styles'
 import Title from '@components/Title'
-import FilterIcon from '@assets/icons/filter.svg'
-import SearchIcon from '@assets/icons/search.svg'
-import LogOutIcon from '@assets/icons/logout.svg'
+import { FaFilter, FaSearch } from 'react-icons/fa'
+import { FiLogOut } from 'react-icons/fi'
 import firebase from '@utils/firebaseClient'
 import { Pages } from '@utils/constants'
 
@@ -75,14 +73,14 @@ const Header: FC<HeaderProps> = ({
   return (
     <HeaderContainer>
       <Button title={'Filters'} onClick={showDrawer} data-cy={'drawer-button'}>
-        <Image src={FilterIcon} alt={'Filter'} width={22.5} height={15} />
+        <FaFilter color={'#fff'} size={20} />
       </Button>
       <TitleContent>
         <Title size={28} />
       </TitleContent>
       <SearchContent>
         <SearchIconContent>
-          <Image src={SearchIcon} alt={'Search'} width={20} height={20} />
+          <FaSearch color={'#fff'} size={20} />
         </SearchIconContent>
         <SearchInput
           placeholder={'Search for a title, URL or date'}
@@ -106,7 +104,7 @@ const Header: FC<HeaderProps> = ({
         </SwitchButton>
       </ExpandedContent>
       <Button onClick={signOut} title={'Sign Out'} data-cy={'signout-button'}>
-        <Image src={LogOutIcon} alt={'User Session'} width={25} height={25} />
+        <FiLogOut color={'#fff'} size={25} />
       </Button>
     </HeaderContainer>
   )
