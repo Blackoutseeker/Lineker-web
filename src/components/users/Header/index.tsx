@@ -22,6 +22,7 @@ import FilterIcon from '@assets/icons/filter.svg'
 import SearchIcon from '@assets/icons/search.svg'
 import LogOutIcon from '@assets/icons/logout.svg'
 import firebase from '@utils/firebaseClient'
+import { Pages } from '@utils/constants'
 
 interface HeaderProps {
   searchInputValue: string
@@ -56,7 +57,7 @@ const Header: FC<HeaderProps> = ({
   }
 
   const navigateToHomepage = () => {
-    router.push('/')
+    router.push(Pages.HOME)
   }
 
   const signOut = async () => {
