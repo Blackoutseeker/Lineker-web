@@ -20,6 +20,7 @@ import MessageBox, { BoxTypes } from '@components/login/MessageBox'
 import ReCAPTCHA from 'react-google-recaptcha'
 import firebase from '@utils/firebaseClient'
 import firebaseApp from 'firebase/app'
+import { Pages } from '@utils/constants'
 
 const Form: FC = () => {
   const router = useRouter()
@@ -42,12 +43,7 @@ const Form: FC = () => {
   }
 
   const navigateToUserPage = () => {
-    router.push({
-      pathname: '/user',
-      query: {
-        currentFilter: 'Default'
-      }
-    })
+    router.push(Pages.USER)
   }
 
   const handleInsertUserIntoDatabase = async (uid: string, email: string) => {
