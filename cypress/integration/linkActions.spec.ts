@@ -38,6 +38,7 @@ describe('Testing the "Link" component and its actions', () => {
   const deleteLink = (title: string) => {
     deleteButton(title).click()
     confirmButton().click()
+    cy.getElementByDataCy(`${title}-link`).should('not.exist')
   }
 
   it('Should create a new link, copy its url to clipboard and delete it', () => {
