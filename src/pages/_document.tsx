@@ -50,6 +50,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           <link rel="shortcut icon" href="Lineker.ico" type="image/x-icon" />
+          <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
           <meta name="author" content="Felipe Pereira de Souza Silva" />
           <meta
             property="og:image"
