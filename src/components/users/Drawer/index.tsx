@@ -10,9 +10,10 @@ import {
   DrawerHolder,
   AddFilterInput,
   AddButton,
-  FilterContent,
+  Divider,
   FilterButton,
-  FilterButtonText,
+  FilterTextContent,
+  FilterText,
   DeleteFilterButton
 } from './styles'
 import { HiOutlineArrowLeft, HiPlus } from 'react-icons/hi'
@@ -163,21 +164,19 @@ const Drawer: FC<DrawerProps> = ({
               <HiPlus color={'#fff'} size={20} />
             </AddButton>
           </ItemContent>
+          <Divider />
           {filters.map((item: FilterItem, index: number) => (
-            <FilterContent
-              className={item.filter === currentFilter ? 'current-filter' : ''}
+            <FilterButton
               key={index}
+              className={item.filter === currentFilter ? 'current-filter' : ''}
+              onClick={() => {
+                setCurrentFilter(item.filter)
+              }}
+              title={decodeFromDatabase(item.filter)}
             >
-              <FilterButton
-                onClick={() => {
-                  setCurrentFilter(item.filter)
-                }}
-                title={decodeFromDatabase(item.filter)}
-              >
-                <FilterButtonText>
-                  {decodeFromDatabase(item.filter)}
-                </FilterButtonText>
-              </FilterButton>
+              <FilterTextContent>
+                <FilterText>{decodeFromDatabase(item.filter)}</FilterText>
+              </FilterTextContent>
               {item.filter !== 'Default' ? (
                 <DeleteFilterButton
                   onClick={() => {
@@ -188,7 +187,7 @@ const Drawer: FC<DrawerProps> = ({
                   <IoMdClose color={'#fff'} size={20} />
                 </DeleteFilterButton>
               ) : null}
-            </FilterContent>
+            </FilterButton>
           ))}
         </DrawerContainer>
       </OutsideClickHandler>

@@ -32,7 +32,6 @@ export const DrawerContainer = styled.div`
   }
   .current-filter {
     background-color: ${({ theme }) => theme.colors.secundary};
-    box-shadow: ${({ theme }) => theme.shadow};
   }
 `
 
@@ -113,38 +112,34 @@ export const AddButton = styled.button`
   }
 `
 
-export const FilterContent = styled.div`
-  width: 275px;
-  min-height: 35px;
+export const Divider = styled.hr`
+  width: 78%;
+  border-color: rgba(255, 255, 255, 0.2);
+  margin: 10px 0;
+`
+
+export const FilterButton = styled.div`
+  width: 100%;
+  min-height: 50px;
   display: flex;
   align-items: center;
   flex-direction: row;
-  padding-right: 2px;
-  margin: 12px 0;
-  background-color: ${({ theme }) => theme.colors.background};
-  border-radius: 20px;
+  padding: 12px 40px;
+  cursor: pointer;
   transition: 200ms;
   :hover {
     background-color: ${({ theme }) => theme.colors.secundary};
-    box-shadow: ${({ theme }) => theme.shadow};
   }
 `
 
-export const FilterButton = styled.button`
-  outline: none;
-  border: none;
-  width: 90%;
+export const FilterTextContent = styled.div`
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  padding-left: 20px;
-  background-color: transparent;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  cursor: pointer;
 `
 
-export const FilterButtonText = styled.span`
+export const FilterText = styled.span`
   width: 90%;
   color: #fff;
   font-size: 20px;
@@ -157,8 +152,8 @@ export const FilterButtonText = styled.span`
 export const DeleteFilterButton = styled.button`
   outline: none;
   border: none;
-  width: 30px;
-  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
