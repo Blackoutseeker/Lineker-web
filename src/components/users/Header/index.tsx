@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { StoreState } from '@store/index'
@@ -12,12 +12,15 @@ import {
   SearchContent,
   SearchIconContent,
   SearchInput,
+  CleanIconContent,
+  CleanButton,
   SwitchButton,
   SwitchTrack,
   SwitchThumb
 } from './styles'
 import Title from '@components/Title'
 import { FaFilter, FaSearch } from 'react-icons/fa'
+import { IoMdClose } from 'react-icons/io'
 import { FiLogOut } from 'react-icons/fi'
 import firebase from '@utils/firebaseClient'
 import { Pages } from '@utils/constants'
@@ -36,9 +39,19 @@ const Header: FC<HeaderProps> = ({
   const router = useRouter()
   const dispatch = useDispatch()
   const theme = useSelector((state: StoreState) => state.theme)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const showDrawer = () => {
+  const showFiltersDrawer = () => {
     setShowDrawer(true)
+  }
+
+  const setFocusOnSearchInput = () => {
+    searchInputRef.current?.focus()
+  }
+
+  const clearSearchInput = () => {
+    setSearchInputValue('')
+    setFocusOnSearchInput()
   }
 
   const switchTheme = () => {
@@ -72,7 +85,11 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <HeaderContainer>
-      <Button title={'Filters'} onClick={showDrawer} data-cy={'drawer-button'}>
+      <Button
+        title={'Filters'}
+        onClick={showFiltersDrawer}
+        data-cy={'drawer-button'}
+      >
         <FaFilter color={'#fff'} size={20} />
       </Button>
       <TitleContent>
@@ -83,12 +100,18 @@ const Header: FC<HeaderProps> = ({
           <FaSearch color={'#fff'} size={20} />
         </SearchIconContent>
         <SearchInput
+          ref={searchInputRef}
           placeholder={'Search for a title, URL or date'}
           value={searchInputValue}
           onChange={({ target }) => {
             setSearchInputValue(target.value)
           }}
         />
+        <CleanIconContent>
+          <CleanButton onClick={clearSearchInput} title={'Clear Search Input'}>
+            <IoMdClose color={'#fff'} size={20} />
+          </CleanButton>
+        </CleanIconContent>
       </SearchContent>
       <ExpandedContent>
         <SwitchButton

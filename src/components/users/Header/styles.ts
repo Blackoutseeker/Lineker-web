@@ -63,6 +63,28 @@ export const SearchIconContent = styled.div`
   left: 15px;
 `
 
+export const CleanIconContent = styled.div`
+  position: absolute;
+  right: 15px;
+`
+
+export const CleanButton = styled.button`
+  outline: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+  transition: 200ms;
+  :hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+`
+
 export const SearchInput = styled.input`
   outline: none;
   border: none;
@@ -71,7 +93,7 @@ export const SearchInput = styled.input`
   background-color: ${({ theme }) => theme.colors.background};
   border-radius: 4px;
   padding-left: 50px;
-  padding-right: 20px;
+  padding-right: 60px;
   color: #fff;
   font-size: 20px;
   transition: 200ms;
