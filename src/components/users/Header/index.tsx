@@ -22,6 +22,7 @@ import Title from '@components/Title'
 import { FaFilter, FaSearch } from 'react-icons/fa'
 import { IoMdClose } from 'react-icons/io'
 import { FiLogOut } from 'react-icons/fi'
+import { BiHistory } from 'react-icons/bi'
 import firebase from '@utils/firebaseClient'
 import { Pages } from '@utils/constants'
 
@@ -65,6 +66,10 @@ const Header: FC<HeaderProps> = ({
     }
     const themeToBeSetted = !theme
     dispatch(setTheme(themeToBeSetted, saveTheme))
+  }
+
+  const navigateToHistoryPage = () => {
+    router.push(Pages.HISTORY)
   }
 
   const navigateToHomepage = () => {
@@ -126,6 +131,13 @@ const Header: FC<HeaderProps> = ({
           </SwitchTrack>
         </SwitchButton>
       </ExpandedContent>
+      <Button
+        onClick={navigateToHistoryPage}
+        title={'History'}
+        data-cy={'history-button'}
+      >
+        <BiHistory color={'#fff'} size={30} />
+      </Button>
       <Button onClick={signOut} title={'Sign Out'} data-cy={'signout-button'}>
         <FiLogOut color={'#fff'} size={25} />
       </Button>
