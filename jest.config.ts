@@ -88,7 +88,9 @@ export default {
     '@store/(.*)': '<rootDir>/src/store/$1',
     '@utils/(.*)': '<rootDir>/src/utils/$1',
     '@services/(.*)': '<rootDir>/src/services/$1',
-    '@styles/(.*)': '<rootDir>/src/styles/$1'
+    '@styles/(.*)': '<rootDir>/src/styles/$1',
+    '@database/(.*)': '<rootDir>/src/database/$1',
+    '@models/(.*)': '<rootDir>/src/models/$1'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -7,7 +7,9 @@
       "@services/*": ["src/services/*"],
       "@styles/*": ["src/styles/*"],
       "@store/*": ["src/store/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@database/*": ["src/database/*"],
+      "@models/*": ["src/models/*"]
     },
     "target": "ES5",
     "lib": ["DOM", "DOM.Iterable", "ESNext", "ES5"],
