@@ -1,14 +1,14 @@
 import { createContext, useState, useEffect, useContext } from 'react'
-import firebaseApp from 'firebase/app'
 import { setCookie, destroyCookie } from 'nookies'
-import firebaseClient from '@utils/firebaseClient'
+import { User } from 'firebase/auth'
+import { defaultAuth } from '@utils/firebaseClient'
 
-const AuthContext = createContext<{ user: firebaseApp.User | null }>({
+const AuthContext = createContext<{ user: User | null }>({
   user: null
 })
 
 export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<firebaseApp.User | null>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   const saveTokenByCookie = (token: string) => {
     setCookie(undefined, 'token', token, {
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: any) => {
   }
 
   useEffect(() => {
-    return firebaseClient.auth().onIdTokenChanged(async user => {
+    return defaultAuth.onIdTokenChanged(async user => {
       if (!user) {
         setUser(null)
         deleteTokenFromCookie()
