@@ -5,7 +5,7 @@ import useAuth from '@services/auth'
 import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
-import firebaseAdmin from '@utils/firebaseAdmin'
+import { defaultAuth } from '@utils/firebaseAdmin'
 import { Pages } from '@utils/constants'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -133,7 +133,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
-    await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
+    await defaultAuth.verifyIdToken(tokenLoaded)
     return {
       redirect: {
         destination: Pages.USER,

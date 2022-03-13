@@ -2,7 +2,7 @@ import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
-import firebaseAdmin from '@utils/firebaseAdmin'
+import { defaultAuth } from '@utils/firebaseAdmin'
 import { Pages } from '@utils/constants'
 import Head from 'next/head'
 import Container from '@components/login/Container'
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
-    await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
+    await defaultAuth.verifyIdToken(tokenLoaded)
     return {
       redirect: {
         destination: Pages.USER,
