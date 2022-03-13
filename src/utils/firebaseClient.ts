@@ -1,6 +1,6 @@
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/database'
+import { getApps, initializeApp } from 'firebase/app'
+import { Auth, getAuth } from 'firebase/auth'
+import { Database, getDatabase } from 'firebase/database'
 
 interface FirebaseConfig {
   apiKey: string
@@ -22,6 +22,11 @@ const config: FirebaseConfig = {
   appId: process.env.APP_ID!
 }
 
-export default !firebase.apps.length
-  ? firebase.initializeApp(config)
-  : firebase.app()
+const appIsNotInitialized: boolean = !getApps().length
+
+if (appIsNotInitialized) {
+  initializeApp(config)
+}
+
+export const defaultAuth: Auth = getAuth()
+export const defaultDatabase: Database = getDatabase()
