@@ -20,7 +20,7 @@ const ThemeWrapper: FC = ({ children }) => {
   )
 }
 
-const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <Provider store={store}>
       <ThemeWrapper>
@@ -38,4 +38,4 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   )
 }
 
-export default MyApp
+export default App
