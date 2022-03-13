@@ -1,8 +1,11 @@
-import firebaseAdmin from 'firebase-admin'
+import { initializeApp, getApps, cert } from 'firebase-admin/app'
+import { Auth, getAuth } from 'firebase-admin/auth'
 
-if (!firebaseAdmin.apps.length) {
-  firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert({
+const appIsNotInitialized: boolean = !getApps().length
+
+if (appIsNotInitialized) {
+  initializeApp({
+    credential: cert({
       privateKey: process.env.PRIVATE_KEY!.replace(/\\n/g, '\n'),
       clientEmail: process.env.CLIENT_EMAIL,
       projectId: process.env.PROJECT_ID
@@ -11,4 +14,4 @@ if (!firebaseAdmin.apps.length) {
   })
 }
 
-export default firebaseAdmin
+export const defaultAuth: Auth = getAuth()
