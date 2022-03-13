@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components'
 import dark from '@styles/themes/dark'
 import light from '@styles/themes/light'
 import GlobalStyle from '@styles/global'
-import { AuthProvider } from '@services/auth'
+import { AuthProvider } from '@services/authProvider'
 
 const ThemeWrapper: FC = ({ children }) => {
   const theme = useSelector((state: StoreState) => state.theme)

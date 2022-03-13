@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from 'react'
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
-import useAuth from '@services/auth'
+import { useAuth } from '@services/authProvider'
 import { parseCookies } from 'nookies'
 import isMobileDevice from '@services/device'
 import load from '@services/load'
