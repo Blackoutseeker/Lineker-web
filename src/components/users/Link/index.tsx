@@ -1,4 +1,5 @@
 import { FC, memo } from 'react'
+import LinkItem from '@models/linkItem'
 import {
   LinkContainer,
   Button,
@@ -13,13 +14,6 @@ import {
 } from './styles'
 import QrCode from 'qrcode.react'
 import { FaCopy, FaTrash } from 'react-icons/fa'
-
-export interface LinkItem {
-  title: string
-  url: string
-  date: string
-  datetime: string
-}
 
 interface LinkProps extends LinkItem {
   setDeleteLinkDatetime: (datetime: string) => void
