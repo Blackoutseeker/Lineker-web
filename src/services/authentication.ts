@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  signOut,
   AuthError
 } from 'firebase/auth'
 import { addNewUserIntoDatabase } from '@database/user'
@@ -60,4 +61,11 @@ export const requestPasswordReset = async (
   await sendPasswordResetEmail(defaultAuth, email)
     .then(onSuccess)
     .catch(onError)
+}
+
+export const signOutProvider = async (
+  onSuccess?: () => Promise<void> | void,
+  onError?: () => Promise<void> | void
+) => {
+  await signOut(defaultAuth).then(onSuccess).catch(onError)
 }
