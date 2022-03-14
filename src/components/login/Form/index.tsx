@@ -18,8 +18,13 @@ import Title from '@components/Title'
 import LinekerLogo from '@assets/images/Lineker.png'
 import MessageBox, { BoxTypes } from '@components/login/MessageBox'
 import ReCAPTCHA from 'react-google-recaptcha'
-import firebase from '@utils/firebaseClient'
-import firebaseApp from 'firebase/app'
+import { AuthError } from 'firebase/auth'
+import {
+  signInWithEmailAndPasswordProvider,
+  signInWithGoogleProvider,
+  signUpWithEmailAndPasswordProvider,
+  requestPasswordReset
+} from '@services/authentication'
 import { Pages } from '@utils/constants'
 
 const Form: FC = () => {
@@ -46,64 +51,49 @@ const Form: FC = () => {
     router.push(Pages.USER)
   }
 
-  const handleInsertUserIntoDatabase = async (uid: string, email: string) => {
-    const databaseUsersRef = firebase.database().ref('users')
-    await databaseUsersRef
-      .once('value', async snapshot => {
-        const isUserNotStored = !snapshot.hasChild(uid)
-        if (isUserNotStored) {
-          await databaseUsersRef.child(uid).set({
-            email: email,
-            filters: {
-              Default: {
-                filter: 'Default'
-              }
-            }
-          })
-        }
-      })
-      .catch(({ message }) => {
-        showMessageBox(BoxTypes.ERROR, message)
-      })
+  const handleAuthenticationError = (authError: AuthError) => {
+    const { code } = authError
+    switch (code) {
+      case 'auth/email-already-in-use':
+        showMessageBox(BoxTypes.ERROR, 'This email is already in use.')
+        break
+      case 'auth/invalid-email':
+        showMessageBox(BoxTypes.ERROR, 'This email is invalid.')
+        break
+      case 'auth/user-not-found':
+        showMessageBox(
+          BoxTypes.ERROR,
+          'This email is not registered, please create a new account.'
+        )
+        break
+      case 'auth/wrong-password':
+        showMessageBox(BoxTypes.ERROR, 'The password is invalid.')
+        break
+      default:
+        showMessageBox(BoxTypes.ERROR, 'Error while authenticating.')
+    }
   }
 
-  const handleFirebaseAuthMethodsPromises = async (
-    firebaseAuthMethod: Promise<firebaseApp.auth.UserCredential>,
-    insertUserIntoDatabase?: boolean
-  ) => {
-    await firebaseAuthMethod
-      .then(async ({ user }) => {
-        if (insertUserIntoDatabase) {
-          await handleInsertUserIntoDatabase(user!.uid, user!.email!)
-        }
-        navigateToUserPage()
-      })
-      .catch(({ message }: { message: string }) => {
-        showMessageBox(BoxTypes.ERROR, message)
-      })
-  }
-
-  const signIn = () => {
-    handleFirebaseAuthMethodsPromises(
-      firebase.auth().signInWithEmailAndPassword(emailValue, passwordValue)
+  const signIn = async () => {
+    await signInWithEmailAndPasswordProvider(
+      emailValue,
+      passwordValue,
+      navigateToUserPage,
+      handleAuthenticationError
     )
   }
 
-  const signInWithGoogle = () => {
-    const googleAuthProvider = new firebaseApp.auth.GoogleAuthProvider()
-    handleFirebaseAuthMethodsPromises(
-      firebase.auth().signInWithPopup(googleAuthProvider),
-      true
-    )
+  const signInWithGoogle = async () => {
+    await signInWithGoogleProvider(navigateToUserPage)
   }
 
-  const signUp = () => {
+  const signUp = async () => {
     if (typeof recaptchaToken === 'string') {
-      handleFirebaseAuthMethodsPromises(
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(emailValue, passwordValue),
-        true
+      await signUpWithEmailAndPasswordProvider(
+        emailValue,
+        passwordValue,
+        navigateToUserPage,
+        handleAuthenticationError
       )
     } else {
       showMessageBox(BoxTypes.ERROR, 'Please confirm the reCAPTCHA to sign up')
@@ -115,20 +105,18 @@ const Form: FC = () => {
   )
   const isValidForm: boolean = isValidEmail && passwordValue.length >= 6
 
-  const requestPasswordReset = async () => {
+  const resetPassword = async () => {
     if (isValidEmail) {
-      await firebase
-        .auth()
-        .sendPasswordResetEmail(emailValue)
-        .then(() => {
+      await requestPasswordReset(
+        emailValue,
+        () => {
           showMessageBox(
             BoxTypes.PASSWORD,
             'An email has been sent to you, please check your inbox to reset your password'
           )
-        })
-        .catch(({ message }: { message: string }) => {
-          showMessageBox(BoxTypes.ERROR, message)
-        })
+        },
+        handleAuthenticationError
+      )
     }
   }
 
@@ -198,7 +186,7 @@ const Form: FC = () => {
       )}
       {!creatingAccount ? (
         <SimpleTextContent
-          onClick={requestPasswordReset}
+          onClick={resetPassword}
           data-cy={'forgot-password-button'}
         >
           <SimpleText enableHover={true}>Forgot your password?</SimpleText>
