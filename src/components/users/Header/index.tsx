@@ -23,7 +23,7 @@ import { FaFilter, FaSearch } from 'react-icons/fa'
 import { IoMdClose } from 'react-icons/io'
 import { FiLogOut } from 'react-icons/fi'
 import { BiHistory } from 'react-icons/bi'
-import firebase from '@utils/firebaseClient'
+import { signOutProvider } from '@services/authentication'
 import { Pages } from '@utils/constants'
 
 interface HeaderProps {
@@ -76,16 +76,15 @@ const Header: FC<HeaderProps> = ({
     router.push(Pages.HOME)
   }
 
-  const signOut = async () => {
+  const destroyCurrentUserSession = () => {
     destroyCookie(undefined, 'theme')
-    await firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        const lightTheme = false
-        dispatch(setTheme(lightTheme))
-        navigateToHomepage()
-      })
+    const lightTheme = false
+    dispatch(setTheme(lightTheme))
+    navigateToHomepage()
+  }
+
+  const signOut = async () => {
+    await signOutProvider(destroyCurrentUserSession)
   }
 
   return (
