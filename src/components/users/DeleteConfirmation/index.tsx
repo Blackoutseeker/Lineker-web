@@ -1,5 +1,5 @@
-import { FC, useCallback, memo } from 'react'
-import useAuth from '@services/auth'
+import { FC, memo } from 'react'
+import { useAuth } from '@services/authProvider'
 import {
   ConfirmationModalHolder,
   ConfirmationModal,
@@ -10,40 +10,40 @@ import {
   ButtonText
 } from './styles'
 import OutsideClickHandler from 'react-outside-click-handler'
-import firebase from '@utils/firebaseClient'
+import { removeLinkFromDatabase } from '@database/link'
 
 interface DeleteConfirmationProps {
-  deleteLinkDatetime: string
-  setDeleteLinkDatetime: (value: string) => void
+  linkDatetime: string
+  setLinkDatetime: (value: string) => void
   currentFilter: string
 }
 
 const DeleteConfirmation: FC<DeleteConfirmationProps> = ({
-  deleteLinkDatetime,
-  setDeleteLinkDatetime,
+  linkDatetime,
+  setLinkDatetime,
   currentFilter
 }) => {
   const auth = useAuth()
 
-  const hideConfirmation = useCallback(() => {
-    setDeleteLinkDatetime('')
-  }, [setDeleteLinkDatetime])
+  const hideConfirmation = () => {
+    setLinkDatetime('')
+  }
 
-  const deleteLink = useCallback(async () => {
-    await firebase
-      .database()
-      .ref(
-        `users/${auth!.user!.uid}/links/${currentFilter}/${deleteLinkDatetime}`
+  const deleteLink = async () => {
+    const userIsAuthenticated = auth.user !== null
+    if (userIsAuthenticated) {
+      await removeLinkFromDatabase(
+        auth.user!.uid,
+        currentFilter,
+        linkDatetime,
+        hideConfirmation
       )
-      .remove()
-      .then(hideConfirmation)
-  }, [auth, currentFilter, deleteLinkDatetime, hideConfirmation])
+    }
+  }
 
   return (
     <ConfirmationModalHolder
-      className={`${
-        deleteLinkDatetime !== '' ? 'show' : 'hide'
-      }-confirmation-holder`}
+      className={`${linkDatetime !== '' ? 'show' : 'hide'}-confirmation-holder`}
     >
       <OutsideClickHandler onOutsideClick={hideConfirmation}>
         <ConfirmationModal>

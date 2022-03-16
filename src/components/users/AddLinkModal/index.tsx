@@ -1,7 +1,7 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
 import { format } from 'date-fns'
-import useAuth from '@services/auth'
-import { LinkItem } from '../Link'
+import { useAuth } from '@services/authProvider'
+import LinkItem from '@models/linkItem'
 import {
   AddLinkModalHolder,
   AddModal,
@@ -11,7 +11,7 @@ import {
 } from './styles'
 import OutsideClickHandler from 'react-outside-click-handler'
 import { HiPlus } from 'react-icons/hi'
-import firebase from '@utils/firebaseClient'
+import { addNewLinkToDatabase } from '@database/link'
 
 interface AddLinkModalProps {
   showAddLinkModal: boolean
@@ -28,48 +28,34 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
   const [titleInputValue, setTitleInputValue] = useState<string>('')
   const [urlInputValue, setUrlInputValue] = useState<string>('')
 
-  const hideAddLinkModal = useCallback(() => {
+  const hideAddLinkModal = () => {
     setShowAddLinkModal(false)
     setTitleInputValue('')
     setUrlInputValue('')
-  }, [setShowAddLinkModal])
+  }
 
-  const createFilterIfNotExists = useCallback(async () => {
-    await firebase
-      .database()
-      .ref(`users/${auth.user!.uid}/filters/${currentFilter}`)
-      .set({
-        filter: currentFilter
-      })
-  }, [auth.user, currentFilter])
+  const addNewLink = async () => {
+    const urlInputValueIsNotEmpty = urlInputValue.length > 0
+    const userIsAuthenticated = auth.user !== null
+    if (urlInputValueIsNotEmpty && userIsAuthenticated) {
+      const date: string = format(new Date(), 'dd/MM/yyyy')
+      const datetime: string = format(new Date(), 'dd-MM-yyyy-kk:mm:ss')
 
-  const addNewLink = useCallback(async () => {
-    if (urlInputValue !== '') {
-      const date = format(new Date(), 'dd/MM/yyyy')
-      const datetime = format(new Date(), 'dd-MM-yyyy-kk:mm:ss')
-
-      const link: LinkItem = {
+      const linkItem: LinkItem = {
         title: titleInputValue === '' ? 'Untitled' : titleInputValue,
         url: urlInputValue,
         date,
         datetime
       }
 
-      await createFilterIfNotExists()
-      await firebase
-        .database()
-        .ref(`users/${auth.user!.uid}/links/${currentFilter}/${datetime}`)
-        .set(link)
-        .then(hideAddLinkModal)
+      await addNewLinkToDatabase(
+        auth.user!.uid,
+        currentFilter,
+        linkItem,
+        hideAddLinkModal
+      )
     }
-  }, [
-    titleInputValue,
-    urlInputValue,
-    auth.user,
-    currentFilter,
-    createFilterIfNotExists,
-    hideAddLinkModal
-  ])
+  }
 
   const handleEnterKeyDown = (key: string) => {
     if (key === 'Enter') {

@@ -2,14 +2,13 @@ import { useState, useCallback, useEffect } from 'react'
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useDispatch } from 'react-redux'
 import { setTheme } from '@store/ducks/theme'
-import useAuth from '@services/auth'
+import { useAuth } from '@services/authProvider'
 import dynamic from 'next/dynamic'
 import { parseCookies } from 'nookies'
 import load from '@services/load'
-import firebaseAdmin from '@utils/firebaseAdmin'
-import firebaseClient from '@utils/firebaseClient'
+import { defaultAuth } from '@utils/firebaseAdmin'
+import { databaseLinksListener, getAllLinksFromDatabase } from '@database/link'
 import { Pages } from '@utils/constants'
-import firebaseApp from 'firebase/app'
 import {
   decodeFromDatabase,
   encodeForDatabase
@@ -18,7 +17,7 @@ import Head from 'next/head'
 import PageContainer from '@components/PageContainer'
 import Header from '@components/users/Header'
 import FloatingActionButton from '@components/users/FloatingActionButton'
-import { LinkItem } from '@components/users/Link'
+import LinkItem from '@models/linkItem'
 const Drawer = dynamic(() => import('@components/users/Drawer'))
 const VoidLink = dynamic(() => import('@components/users/VoidLink'))
 const Link = dynamic(() => import('@components/users/Link'))
@@ -39,36 +38,10 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
   const [searchInputValue, setSearchInputValue] = useState<string>('')
   const [showDrawer, setShowDrawer] = useState<boolean>(false)
   const [showAddLinkModal, setShowAddLinkModal] = useState<boolean>(false)
-  const [deleteLinkDatetime, setDeleteLinkDatetime] = useState<string>('')
+  const [linkDatetime, setLinkDatetime] = useState<string>('')
   const [qrModalUrl, setQrModalUrl] = useState<string>('')
-  const [links, setLinks] = useState<LinkItem[] | null>(preLoadedLinks)
-
-  const getLinksFromDatabase = useCallback(
-    (user: firebaseApp.database.DataSnapshot) => {
-      const hasLinksNode = user.hasChild('links')
-      if (hasLinksNode) {
-        const links = user.child('links')
-        const hasLinksToCurrentFilter = links.hasChild(currentFilter)
-        if (hasLinksToCurrentFilter) {
-          const getLinks: LinkItem[] = []
-          links.child(currentFilter).forEach(link => {
-            getLinks.push({
-              title: link.val().title,
-              url: link.val().url,
-              date: link.val().date,
-              datetime: link.val().datetime
-            })
-          })
-          setLinks(getLinks)
-        } else {
-          setLinks(null)
-        }
-      } else {
-        setLinks(null)
-      }
-    },
-    [currentFilter]
-  )
+  const [linkItems, setLinkItems] = useState<LinkItem[] | null>(preLoadedLinks)
+  const linksDatabaseRef = `users/${auth.user?.uid}/links/${currentFilter}`
 
   const loadTheme = useCallback(() => {
     const getThemeByCookie = (): string | undefined => parseCookies().theme
@@ -76,37 +49,36 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
     dispatch(setTheme(loadedTheme))
   }, [dispatch])
 
-  const filterLinks = (link: LinkItem): boolean => {
+  const filterLinksBySearchInputValue = (linkItem: LinkItem): boolean => {
     const searchInputValueInLowerCase = searchInputValue.toLowerCase()
-    const linkTitleInLowerCase = link.title.toLowerCase()
-    const linkUrlInLowerCase = link.url.toLowerCase()
+    const linkTitleInLowerCase = linkItem.title.toLowerCase()
+    const linkUrlInLowerCase = linkItem.url.toLowerCase()
 
     if (
       linkTitleInLowerCase.includes(searchInputValueInLowerCase) ||
       linkUrlInLowerCase.includes(searchInputValueInLowerCase) ||
-      link.date.includes(searchInputValue) ||
-      link.datetime.includes(searchInputValue)
+      linkItem.date.includes(searchInputValue) ||
+      linkItem.datetime.includes(searchInputValue)
     ) {
       return true
     }
     return false
   }
 
-  const filteredLinks: LinkItem[] | undefined = links?.filter(filterLinks)
+  const filteredLinks: LinkItem[] | undefined = linkItems?.filter(
+    filterLinksBySearchInputValue
+  )
 
   useEffect(() => {
     loadTheme()
-
-    const databaseRef = firebaseClient
-      .database()
-      .ref(`users/${auth?.user?.uid}`)
-    databaseRef.on('value', getLinksFromDatabase)
+    const linksListener = databaseLinksListener(linksDatabaseRef, setLinkItems)
+    linksListener.listen()
 
     return () => {
-      databaseRef.off('value', getLinksFromDatabase)
+      linksListener.unlisten()
       setSearchInputValue('')
     }
-  }, [loadTheme, auth?.user, getLinksFromDatabase])
+  }, [loadTheme, auth?.user, linksDatabaseRef])
 
   return (
     <PageContainer>
@@ -130,8 +102,8 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
         currentFilter={currentFilter}
       />
       <DeleteConfirmation
-        deleteLinkDatetime={deleteLinkDatetime}
-        setDeleteLinkDatetime={setDeleteLinkDatetime}
+        linkDatetime={linkDatetime}
+        setLinkDatetime={setLinkDatetime}
         currentFilter={currentFilter}
       />
       {filteredLinks ? (
@@ -142,7 +114,7 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
             url={link.url}
             date={link.date}
             datetime={link.datetime}
-            setDeleteLinkDatetime={setDeleteLinkDatetime}
+            setDeleteLinkDatetime={setLinkDatetime}
             setQrModalUrl={setQrModalUrl}
           />
         ))
@@ -166,33 +138,13 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
-    const decodedIdToken = await firebaseAdmin.auth().verifyIdToken(tokenLoaded)
+    const decodedIdToken = await defaultAuth.verifyIdToken(tokenLoaded)
+    const uid: string = decodedIdToken.uid
 
-    let preLoadedLinks: LinkItem[] | null = []
-    await firebaseClient
-      .database()
-      .ref(`users/${decodedIdToken.uid}`)
-      .once('value', user => {
-        const hasLinksNode = user.hasChild('links')
-        if (hasLinksNode) {
-          const links = user.child('links')
-          const hasLinksToCurrentFilter = links.hasChild(currentFilter)
-          if (hasLinksToCurrentFilter) {
-            links.child(currentFilter).forEach(link => {
-              preLoadedLinks!.push({
-                title: link.val().title,
-                url: link.val().url,
-                date: link.val().date,
-                datetime: link.val().datetime
-              })
-            })
-          } else {
-            preLoadedLinks = null
-          }
-        } else {
-          preLoadedLinks = null
-        }
-      })
+    const preLoadedLinks: LinkItem[] | null = await getAllLinksFromDatabase(
+      uid,
+      currentFilter
+    )
 
     return {
       props: {
