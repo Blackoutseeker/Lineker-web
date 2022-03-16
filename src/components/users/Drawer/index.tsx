@@ -1,6 +1,7 @@
 import { FC, useEffect, useState, useCallback } from 'react'
+import FilterItem from '@models/filterItem'
 import { useRouter } from 'next/router'
-import useAuth from '@services/auth'
+import { useAuth } from '@services/authProvider'
 import {
   BackButton,
   BackContent,
@@ -19,16 +20,15 @@ import {
 import { HiOutlineArrowLeft, HiPlus } from 'react-icons/hi'
 import { IoMdClose } from 'react-icons/io'
 import OutsideClickHandler from 'react-outside-click-handler'
-import firebase from '@utils/firebaseClient'
-import firebaseApp from 'firebase/app'
+import {
+  addNewFilterIntoDatabase,
+  removeFilterFromDatabase,
+  databaseFiltersListener
+} from '@database/filter'
 import {
   encodeForDatabase,
   decodeFromDatabase
 } from '@utils/databaseCodification'
-
-interface FilterItem {
-  filter: string
-}
 
 interface DrawerProps {
   showDrawer: boolean
@@ -45,23 +45,12 @@ const Drawer: FC<DrawerProps> = ({
   const auth = useAuth()
   const [addFilterInputValue, setAddFilterInputValue] = useState<string>('')
   const [filters, setFilters] = useState<FilterItem[]>([{ filter: 'Default' }])
+  const filtersDatabaseRef: string = `users/${auth.user?.uid}/filters`
 
   const hideDrawer = useCallback(() => {
     setShowDrawer(false)
     setAddFilterInputValue('')
   }, [setShowDrawer])
-
-  const getFiltersFromDatabase = (
-    filters: firebaseApp.database.DataSnapshot
-  ) => {
-    const getFilters: FilterItem[] = []
-    filters.forEach(filter => {
-      getFilters.push({
-        filter: filter.val().filter
-      })
-    })
-    setFilters(getFilters)
-  }
 
   const navigateToCurrentFilter = useCallback(
     async (currentFilter: string) => {
@@ -87,18 +76,13 @@ const Drawer: FC<DrawerProps> = ({
   )
 
   const addNewFilter = async () => {
-    const isValidFilter = addFilterInputValue !== ''
-    if (isValidFilter) {
+    const isValidFilter = addFilterInputValue.length > 0
+    const userIsAuthenticated = auth.user !== null
+    if (isValidFilter && userIsAuthenticated) {
       const encodedFilter = encodeForDatabase(addFilterInputValue)
-      await firebase
-        .database()
-        .ref(`users/${auth!.user!.uid}/filters/${encodedFilter}`)
-        .set({
-          filter: encodedFilter
-        })
-        .then(() => {
-          setCurrentFilter(encodedFilter)
-        })
+      await addNewFilterIntoDatabase(auth.user!.uid, encodedFilter, () =>
+        setCurrentFilter(encodedFilter)
+      )
     }
   }
 
@@ -108,35 +92,38 @@ const Drawer: FC<DrawerProps> = ({
     }
   }
 
-  const deleteFilterAndLinks = useCallback(
-    async (filter: string) => {
-      await firebase
-        .database()
-        .ref(`users/${auth!.user!.uid}/filters/${filter}`)
-        .remove()
-      await firebase
-        .database()
-        .ref(`users/${auth!.user!.uid}/links/${filter}`)
-        .remove()
-        .then(() => {
-          if (filter === currentFilter) {
-            setCurrentFilter('Default')
-          }
-        })
+  const setDefaultFilterOnDelete = useCallback(
+    (filter: string) => {
+      if (filter === currentFilter) {
+        setCurrentFilter('Default')
+      }
     },
-    [auth, currentFilter, setCurrentFilter]
+    [currentFilter, setCurrentFilter]
+  )
+
+  const deleteFilterAndItsLinks = useCallback(
+    async (filter: string) => {
+      const userIsAuthenticated = auth.user !== null
+      if (userIsAuthenticated) {
+        await removeFilterFromDatabase(auth.user!.uid, filter, () =>
+          setDefaultFilterOnDelete(filter)
+        )
+      }
+    },
+    [auth.user, setDefaultFilterOnDelete]
   )
 
   useEffect(() => {
-    const databaseRef = firebase
-      .database()
-      .ref(`users/${auth?.user?.uid}/filters`)
-    databaseRef.on('value', getFiltersFromDatabase)
+    const filtersListener = databaseFiltersListener(
+      filtersDatabaseRef,
+      setFilters
+    )
+    filtersListener.listen()
 
     return () => {
-      databaseRef.off('value', getFiltersFromDatabase)
+      filtersListener.unlisten()
     }
-  }, [auth?.user?.uid])
+  }, [auth.user?.uid, filtersDatabaseRef])
 
   return (
     <DrawerHolder className={`${showDrawer ? 'show' : 'hide'}-drawer-holder`}>
@@ -173,6 +160,7 @@ const Drawer: FC<DrawerProps> = ({
                 setCurrentFilter(item.filter)
               }}
               title={decodeFromDatabase(item.filter)}
+              data-cy={`filter-button-${item.filter}`}
             >
               <FilterTextContent>
                 <FilterText>{decodeFromDatabase(item.filter)}</FilterText>
@@ -180,9 +168,10 @@ const Drawer: FC<DrawerProps> = ({
               {item.filter !== 'Default' ? (
                 <DeleteFilterButton
                   onClick={() => {
-                    deleteFilterAndLinks(item.filter)
+                    deleteFilterAndItsLinks(item.filter)
                   }}
                   title={'Delete Filter'}
+                  data-cy={`delete-filter-button-${item.filter}`}
                 >
                   <IoMdClose color={'#fff'} size={20} />
                 </DeleteFilterButton>
