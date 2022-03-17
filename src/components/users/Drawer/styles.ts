@@ -31,7 +31,7 @@ export const DrawerContainer = styled.div`
     background-color: ${({ theme }) => theme.colors.scrollTrack};
   }
   .current-filter {
-    background-color: ${({ theme }) => theme.colors.secundary};
+    background-color: ${({ theme }) => theme.colors.secondary};
   }
 `
 
@@ -102,7 +102,7 @@ export const AddButton = styled.button`
   justify-content: center;
   align-items: center;
   margin: 0 10px;
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 50%;
   box-shadow: ${({ theme }) => theme.shadow};
   cursor: pointer;
@@ -128,7 +128,7 @@ export const FilterButton = styled.div`
   cursor: pointer;
   transition: 200ms;
   :hover {
-    background-color: ${({ theme }) => theme.colors.secundary};
+    background-color: ${({ theme }) => theme.colors.secondary};
   }
 `
 

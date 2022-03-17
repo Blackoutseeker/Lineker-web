@@ -34,7 +34,7 @@ const Button = styled.a`
 `
 
 export const SignInButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
 `
 
 export const SourceCodeButton = styled(Button)`
@@ -69,6 +69,6 @@ export const ShowOffContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   padding: 0 20px;
 `

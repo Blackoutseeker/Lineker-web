@@ -11,7 +11,7 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 50%;
   box-shadow: ${({ theme }) => theme.shadow};
   cursor: pointer;

@@ -51,7 +51,7 @@ export const AddLinkButton = styled.button`
   justify-content: center;
   align-items: center;
   margin-left: 20px;
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 35px;
   box-shadow: ${({ theme }) => theme.shadow};
   cursor: pointer;

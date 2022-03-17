@@ -11,7 +11,7 @@ export const FormContainer = styled.div`
     background-color: #c00;
   }
   .password-box {
-    background-color: ${({ theme }) => theme.colors.secundary};
+    background-color: ${({ theme }) => theme.colors.secondary};
   }
   .hidden-box {
     visibility: hidden;
@@ -105,7 +105,7 @@ const Button = styled.button`
 `
 
 export const LoginButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   :disabled {
     background-color: ${({ theme }) => theme.colors.primary};
     cursor: default;

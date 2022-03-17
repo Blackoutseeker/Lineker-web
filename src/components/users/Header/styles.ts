@@ -131,7 +131,7 @@ export const SwitchTrack = styled.div`
 export const SwitchThumb = styled.div`
   width: 25px;
   height: 25px;
-  background-color: ${({ theme }) => theme.colors.secundary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 50%;
   transition: 200ms;
   box-shadow: ${({ theme }) => theme.shadow};
