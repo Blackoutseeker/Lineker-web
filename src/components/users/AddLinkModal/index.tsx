@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 import { format } from 'date-fns'
 import { useAuth } from '@services/authProvider'
 import LinkItem from '@models/linkItem'
+import HistoryItem from '@models/historyItem'
 import {
   AddLinkModalHolder,
   AddModal,
@@ -12,6 +13,7 @@ import {
 import OutsideClickHandler from 'react-outside-click-handler'
 import { HiPlus } from 'react-icons/hi'
 import { addNewLinkToDatabase } from '@database/link'
+import { addNewHistoryItemIntoDatabase } from '@database/history'
 
 interface AddLinkModalProps {
   showAddLinkModal: boolean
@@ -38,8 +40,10 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
     const urlInputValueIsNotEmpty = urlInputValue.length > 0
     const userIsAuthenticated = auth.user !== null
     if (urlInputValueIsNotEmpty && userIsAuthenticated) {
-      const date: string = format(new Date(), 'dd/MM/yyyy')
-      const datetime: string = format(new Date(), 'dd-MM-yyyy-kk:mm:ss')
+      const currentDate: Date = new Date()
+      const date: string = format(currentDate, 'dd/MM/yyyy')
+      const datetime: string = format(currentDate, 'dd-MM-yyyy-HH:mm:ss')
+      const time: string = format(currentDate, 'HH:mm:ss')
 
       const linkItem: LinkItem = {
         title: titleInputValue === '' ? 'Untitled' : titleInputValue,
@@ -48,10 +52,19 @@ const AddLinkModal: FC<AddLinkModalProps> = ({
         datetime
       }
 
-      await addNewLinkToDatabase(
+      await addNewLinkToDatabase(auth.user!.uid, currentFilter, linkItem)
+
+      const historyItem: HistoryItem = {
+        title: linkItem.title,
+        url: linkItem.url,
+        date,
+        datetime,
+        time
+      }
+
+      await addNewHistoryItemIntoDatabase(
         auth.user!.uid,
-        currentFilter,
-        linkItem,
+        historyItem,
         hideAddLinkModal
       )
     }
