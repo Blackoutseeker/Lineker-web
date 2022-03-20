@@ -21,14 +21,8 @@ interface LinkProps extends LinkItem {
 }
 
 const Link: FC<LinkProps> = props => {
-  const {
-    title,
-    url,
-    date,
-    datetime,
-    setDeleteLinkDatetime,
-    setQrModalUrl
-  } = props
+  const { title, url, date, datetime, setDeleteLinkDatetime, setQrModalUrl } =
+    props
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(url)
