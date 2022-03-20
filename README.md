@@ -6,10 +6,10 @@
 
 </p>
 
-![version](https://img.shields.io/badge/Version-1.1.7-003B59)
+![version](https://img.shields.io/badge/Version-1.2.7-003B59)
 ![ReactJS](https://img.shields.io/badge/ReactJS-17.0.2-61dafb)
 ![NextJS](https://img.shields.io/badge/NextJS-12.1.0-black)
-![typescript](https://img.shields.io/badge/TypeScript-4.3.4-3178c6)
+![typescript](https://img.shields.io/badge/TypeScript-4.6.2-3178c6)
 
 ## Description
 
@@ -47,4 +47,4 @@
 
 <img src="https://user-images.githubusercontent.com/56811005/103469908-d5367780-4d49-11eb-8c56-db348eff1989.png" width="700" >
 
-> © 2021 Felip's Tudio. All rights reserved
+> © 2022 Felip's Tudio. All rights reserved
