@@ -17,6 +17,7 @@ import Head from 'next/head'
 import PageContainer from '@components/PageContainer'
 import Header from '@components/users/Header'
 import FloatingActionButton from '@components/users/FloatingActionButton'
+import UpButton from '@components/users/UpButton'
 import LinkItem from '@models/linkItem'
 const Drawer = dynamic(() => import('@components/users/Drawer'))
 const VoidLink = dynamic(() => import('@components/users/VoidLink'))
@@ -91,6 +92,7 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
         setShowDrawer={setShowDrawer}
       />
       <FloatingActionButton setShowAddLinkModal={setShowAddLinkModal} />
+      <UpButton />
       <AddLinkModal
         showAddLinkModal={showAddLinkModal}
         setShowAddLinkModal={setShowAddLinkModal}
