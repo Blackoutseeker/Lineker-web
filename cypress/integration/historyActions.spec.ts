@@ -55,7 +55,7 @@ describe('Testing the History feature and its actions', () => {
     title: string,
     historyItem: Cypress.Chainable<Element>
   ) => {
-    historyItemDeleteButton(title).click()
+    historyItemDeleteButton(title).click({ multiple: true })
     historyItem.should('not.exist')
   }
 
