@@ -84,7 +84,7 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
   return (
     <PageContainer>
       <Head>
-        <title>{decodeFromDatabase(currentFilter)} - Lineker</title>
+        <title>{`${decodeFromDatabase(currentFilter)} - Lineker`}</title>
       </Head>
       <Header
         searchInputValue={searchInputValue}
