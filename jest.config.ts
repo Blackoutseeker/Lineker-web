@@ -3,7 +3,11 @@
  * https://jestjs.io/docs/configuration
  */
 
-export default {
+import NextJest from 'next/jest'
+
+const createJestConfig = NextJest({ dir: './' })
+
+const customJestConfig = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -17,13 +21,13 @@ export default {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: true,
+  // collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: 'coverage',
+  // coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -103,7 +107,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest',
+  // preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -184,10 +188,10 @@ export default {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  transform: {
-    '^.+\\.(js|jsx|ts|tsx)?$': 'babel-jest',
-    '\\.(svg|png|jpg)$': 'jest-transform-stub'
-  },
+  // transform: {
+  //   '^.+\\.(js|jsx|ts|tsx)?$': 'babel-jest',
+  //   '\\.(svg|png|jpg)$': 'jest-transform-stub'
+  // },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
@@ -207,3 +211,5 @@ export default {
   // Whether to use watchman for file crawling
   watchman: true
 }
+
+export default createJestConfig(customJestConfig)
