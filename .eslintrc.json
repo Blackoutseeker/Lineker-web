@@ -9,7 +9,8 @@
     "standard",
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:@next/next/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
