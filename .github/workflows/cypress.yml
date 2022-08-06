@@ -49,9 +49,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Install dependencies
+        run: yarn install
+
       - name: Run e2e Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          build: yarn dev
-          start: yarn cypress:run
-          wait-on: http://localhost:3000
+        run: |
+          yarn dev
+          yarn cypress:run
