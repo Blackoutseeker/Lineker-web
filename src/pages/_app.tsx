@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider, useSelector } from 'react-redux'
@@ -9,7 +9,11 @@ import light from '@styles/themes/light'
 import GlobalStyle from '@styles/global'
 import { AuthProvider } from '@services/authProvider'
 
-const ThemeWrapper: FC = ({ children }) => {
+interface ThemeWrapperProps {
+  children: ReactNode | ReactNode[]
+}
+
+const ThemeWrapper: FC<ThemeWrapperProps> = ({ children }) => {
   const theme = useSelector((state: StoreState) => state.theme)
 
   return (

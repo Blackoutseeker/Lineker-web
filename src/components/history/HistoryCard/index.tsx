@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 import {
   CardContainer,
   CardHeader,
@@ -10,6 +10,7 @@ import { removeAllHistoryFromDatabase } from '@database/history'
 
 interface HistoryCardProps {
   uid: string | undefined
+  children: ReactNode[] | ReactNode | undefined
 }
 
 const HistoryCard: FC<HistoryCardProps> = ({ uid, children }) => {
