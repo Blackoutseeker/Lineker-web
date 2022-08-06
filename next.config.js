@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  esModule: true,
-  devIndicators: {
-    buildActivity: true
-  },
+
+const nextConfig = {
+  reactStrictMode: true,
   env: {
     API_KEY: process.env.API_KEY,
     AUTH_DOMAIN: process.env.AUTH_DOMAIN,
@@ -20,3 +18,5 @@ module.exports = {
     RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY
   }
 }
+
+module.exports = nextConfig
