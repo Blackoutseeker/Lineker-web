@@ -31,28 +31,14 @@ env:
 
 jobs:
   cypress:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [16.x]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
         with:
-          ref: ${{ github.head_ref }}
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Run e2e Cypress tests
-        run: |
-          yarn dev
-          yarn cypress:run
+          build: npm run build
+          start: npm start
