@@ -4,9 +4,9 @@ describe('Testing "loadTheme" method from "load" module', () => {
   const DARK_THEME = true
   const LIGHT_THEME = false
 
-  const simulateGettingThemeByCookie = (
-    themeLoadedByCookie: string | undefined
-  ) => () => themeLoadedByCookie
+  const simulateGettingThemeByCookie =
+    (themeLoadedByCookie: string | undefined) => () =>
+      themeLoadedByCookie
 
   const stringifyTheme = (themeToBeStringified: boolean): string =>
     String(themeToBeStringified)
@@ -37,9 +37,9 @@ describe('Testing "loadTheme" method from "load" module', () => {
 })
 
 describe('Testing "loadToken" method from "load" module', () => {
-  const simulateGettingTokenByCookie = (
-    tokenLoadedByCookie: string | undefined
-  ) => () => tokenLoadedByCookie
+  const simulateGettingTokenByCookie =
+    (tokenLoadedByCookie: string | undefined) => () =>
+      tokenLoadedByCookie
 
   const getTokenLoaded = (TokenToBeLoaded: string | undefined): string => {
     const getTokenByCookie = simulateGettingTokenByCookie(TokenToBeLoaded)
