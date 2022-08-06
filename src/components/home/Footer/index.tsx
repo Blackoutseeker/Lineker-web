@@ -6,7 +6,7 @@ import Google from '@assets/images/Google.png'
 const Footer: FC = () => {
   return (
     <FooterContainer>
-      <FooterText>© 2021 Felipe Pereira de Souza Silva</FooterText>
+      <FooterText>© 2022 Felipe Pereira de Souza Silva</FooterText>
       <ImageContent
         href={
           'https://play.google.com/store/apps/details?id=com.FelipsTudio.lineker'
