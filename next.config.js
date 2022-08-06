@@ -17,6 +17,8 @@ const nextConfig = {
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     CLIENT_EMAIL: process.env.CLIENT_EMAIL,
 
+    APP_CHECK_DEBUG_TOKEN_FROM_CI: process.env.APP_CHECK_DEBUG_TOKEN_FROM_CI,
+
     RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
     RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
 
