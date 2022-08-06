@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import {
@@ -74,7 +74,9 @@ const Form: FC = () => {
     }
   }
 
-  const signIn = async () => {
+  const signIn = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
     await signInWithEmailAndPasswordProvider(
       emailValue,
       passwordValue,
@@ -84,10 +86,12 @@ const Form: FC = () => {
   }
 
   const signInWithGoogle = async () => {
-    await signInWithGoogleProvider(navigateToUserPage)
+    await signInWithGoogleProvider(navigateToUserPage, () => {})
   }
 
-  const signUp = async () => {
+  const signUp = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
     if (typeof recaptchaToken === 'string') {
       await signUpWithEmailAndPasswordProvider(
         emailValue,
@@ -102,7 +106,6 @@ const Form: FC = () => {
 
   const isValidEmail: boolean =
     /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(emailValue)
-  const isValidForm: boolean = isValidEmail && passwordValue.length >= 6
 
   const resetPassword = async () => {
     if (isValidEmail) {
@@ -119,31 +122,8 @@ const Form: FC = () => {
     }
   }
 
-  const handleEnterKeyDown = (key: string) => {
-    if (key === 'Enter' && isValidForm) {
-      if (!creatingAccount) {
-        signIn()
-      } else {
-        signUp()
-      }
-    }
-  }
-
-  const handleLoginButtonDisabledState = (): boolean => {
-    if (isValidForm) {
-      if (creatingAccount) {
-        if (typeof recaptchaToken === 'string') {
-          return false
-        }
-        return true
-      }
-      return false
-    }
-    return true
-  }
-
   return (
-    <FormContainer>
+    <FormContainer onSubmit={!creatingAccount ? signIn : signUp}>
       <Title size={45} />
       <LogoContent>
         <Image
@@ -156,10 +136,11 @@ const Form: FC = () => {
       </LogoContent>
       <Description>Access links between your devices</Description>
       <Input
+        required
         placeholder={'Email address'}
         type={'email'}
+        autoComplete={'email'}
         value={emailValue}
-        onKeyDown={({ key }) => handleEnterKeyDown(key)}
         onChange={({ target }) => {
           setEmailValue(target.value)
         }}
@@ -167,10 +148,13 @@ const Form: FC = () => {
       />
       {!creatingAccount ? (
         <Input
+          required
           placeholder={'Password'}
           type={'password'}
+          autoComplete={'current-password'}
+          title={'The password must have 6 or more characters'}
+          pattern={'^.{6,}$'}
           value={passwordValue}
-          onKeyDown={({ key }) => handleEnterKeyDown(key)}
           onChange={({ target }) => {
             setPasswordValue(target.value)
           }}
@@ -192,10 +176,13 @@ const Form: FC = () => {
         </SimpleTextContent>
       ) : (
         <Input
+          required
           placeholder={'Password'}
           type={'password'}
+          autoComplete={'new-password'}
+          title={'The password must have 6 or more characters'}
+          pattern={'^.{6,}$'}
           value={passwordValue}
-          onKeyDown={({ key }) => handleEnterKeyDown(key)}
           onChange={({ target }) => {
             setPasswordValue(target.value)
           }}
@@ -212,11 +199,7 @@ const Form: FC = () => {
           />
         </ReCAPTCHAContent>
       )}
-      <LoginButton
-        disabled={handleLoginButtonDisabledState()}
-        onClick={!creatingAccount ? signIn : signUp}
-        data-cy={'login-button'}
-      >
+      <LoginButton type={'submit'} data-cy={'login-button'}>
         <LoginButtonText>
           {!creatingAccount ? 'Sign in' : 'Sign up'}
         </LoginButtonText>

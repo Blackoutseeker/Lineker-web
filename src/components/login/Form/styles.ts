@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   display: flex;
   flex: 1;
   justify-content: center;
