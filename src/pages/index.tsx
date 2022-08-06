@@ -80,7 +80,7 @@ const Home: NextPage<HomeProps> = ({ isMobile }) => {
       />
       <Slogan>Access links between your devices</Slogan>
       <ButtonContent>
-        <Link href={'/login'}>
+        <Link href={'/login'} passHref>
           <SignInButton>
             <ButtonText>Get Started</ButtonText>
           </SignInButton>
