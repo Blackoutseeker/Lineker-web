@@ -26,7 +26,5 @@ export const QrContent = styled.div`
   border: 3px solid #fff;
   border-radius: 5px;
   cursor: none;
-  :hover {
-    background-color: #fff;
-  }
+  background-color: #fff;
 `

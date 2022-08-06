@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import Image from 'next/image'
 import { Content, QrContent } from './styles'
 import QrCode from 'qrcode.react'
@@ -13,11 +13,6 @@ interface StoreContentProps {
 
 const StoreContent: FC<StoreContentProps> = props => {
   const { storeName, mobileAppUrl, sideToBePositioned } = props
-  const [mouseOver, setMouseOver] = useState<boolean>(false)
-
-  const handleMouseMove = () => {
-    setMouseOver(!mouseOver)
-  }
 
   return (
     <Content side={sideToBePositioned}>
@@ -30,13 +25,12 @@ const StoreContent: FC<StoreContentProps> = props => {
           placeholder={'blur'}
         />
       </a>
-      <QrContent onMouseOver={handleMouseMove} onMouseOut={handleMouseMove}>
+      <QrContent>
         <QrCode
           value={mobileAppUrl}
           size={120}
           renderAs={'svg'}
-          fgColor={mouseOver ? '#000' : '#fff'}
-          bgColor={mouseOver ? '#fff' : 'transparent'}
+          fgColor={'#000'}
         />
       </QrContent>
     </Content>
