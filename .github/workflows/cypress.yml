@@ -36,6 +36,15 @@ jobs:
           echo "RECAPTCHA_V3_SECRET_KEY=${{ secrets.RECAPTCHA_V3_SECRET_KEY }}" >> .env.local
           echo "IS_TESTING_FROM_CI=true" >> .env.local
 
+      - name: Setup Cypress environment variables in cypress.env.json file
+        run: |
+          touch cypress.env.json
+          echo { >> cypress.env.json
+          echo "  \"email\": \"${{ secrets.email }}\"," >> cypress.env.json
+          echo "  \"password\": \"${{ secrets.password }}\"," >> cypress.env.json
+          echo "  \"uid\": \"${{ secrets.uid }}\"" >> cypress.env.json
+          echo } >> cypress.env.json
+
       - name: Run e2e Cypress tests
         uses: cypress-io/github-action@v4
         with:
