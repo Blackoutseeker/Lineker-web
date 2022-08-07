@@ -28,8 +28,11 @@ const appIsNotInitialized: boolean = !getApps().length
 if (appIsNotInitialized) {
   const app = initializeApp(config)
 
-  if (typeof document !== 'undefined') {
-    if (process.env.NODE_ENV !== 'production') {
+  if (typeof window !== 'undefined') {
+    if (
+      process.env.NODE_ENV !== 'production' ||
+      process.env.IS_TESTING_FROM_CI
+    ) {
       // @ts-ignore
       self.FIREBASE_APPCHECK_DEBUG_TOKEN =
         process.env.APP_CHECK_DEBUG_TOKEN_FROM_CI!
