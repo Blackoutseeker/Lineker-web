@@ -1,0 +1,43 @@
+name: Run e2e Cypress tests
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup environment variables in .env.local file
+        run: |
+          touch .env.local
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env.local
+          echo "AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }}" >> .env.local
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env.local
+          echo "PROJECT_ID=${{ secrets.PROJECT_ID }}" >> .env.local
+          echo "STORAGE_BUCKET=${{ secrets.STORAGE_BUCKET }}" >> .env.local
+          echo "MESSAGING_SENDER_ID=${{ secrets.MESSAGING_SENDER_ID }}" >> .env.local
+          echo "APP_ID=${{ secrets.APP_ID }}" >> .env.local
+          echo "PRIVATE_KEY=${{ secrets.PRIVATE_KEY }}" >> .env.local
+          echo "CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }}" >> .env.local
+          echo "APP_CHECK_DEBUG_TOKEN_FROM_CI=${{ secrets.APP_CHECK_DEBUG_TOKEN_FROM_CI }}" >> .env.local
+          echo "RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }}" >> .env.local
+          echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env.local
+          echo "RECAPTCHA_V3_SITE_KEY=${{ secrets.RECAPTCHA_V3_SITE_KEY }}" >> .env.local
+          echo "RECAPTCHA_V3_SECRET_KEY=${{ secrets.RECAPTCHA_V3_SECRET_KEY }}" >> .env.local
+          echo "IS_TESTING_FROM_CI=true" >> .env.local
+
+      - name: Run e2e Cypress tests
+        uses: cypress-io/github-action@v4
+        with:
+          build: npm run build
+          start: npm start
