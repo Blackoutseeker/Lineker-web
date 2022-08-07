@@ -20,8 +20,7 @@ export const Button = styled.button<ButtonStyle>`
   box-shadow: ${({ theme }) => theme.shadow};
   cursor: pointer;
   transition: 200ms;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  scale: ${({ isVisible }) => (isVisible ? 1 : 0)};
   :hover {
     background-color: ${({ theme }) => theme.colors.primary};
   }
