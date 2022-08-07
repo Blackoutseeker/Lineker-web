@@ -123,7 +123,7 @@ const Drawer: FC<DrawerProps> = ({
     return () => {
       filtersListener.unlisten()
     }
-  }, [auth.user?.uid, filtersDatabaseRef])
+  }, [filtersDatabaseRef])
 
   return (
     <DrawerHolder className={`${showDrawer ? 'show' : 'hide'}-drawer-holder`}>
@@ -152,9 +152,9 @@ const Drawer: FC<DrawerProps> = ({
             </AddButton>
           </ItemContent>
           <Divider />
-          {filters.map((item: FilterItem, index: number) => (
+          {filters.map((item: FilterItem) => (
             <FilterButton
-              key={index}
+              key={item.filter}
               className={item.filter === currentFilter ? 'current-filter' : ''}
               onClick={() => {
                 setCurrentFilter(item.filter)
