@@ -30,7 +30,7 @@
     "firebase-admin": "^11.0.1",
     "next": "^12.2.4",
     "nookies": "^2.5.2",
-    "qrcode.react": "^2.0.0",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-recaptcha": "^2.1.0",
