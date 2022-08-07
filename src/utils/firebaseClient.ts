@@ -1,4 +1,4 @@
-import { getApps, initializeApp } from 'firebase/app'
+import { getApps, initializeApp, getApp } from 'firebase/app'
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 import { Auth, getAuth } from 'firebase/auth'
 import { Database, getDatabase } from 'firebase/database'
@@ -26,22 +26,19 @@ const config: FirebaseConfig = {
 const appIsNotInitialized: boolean = !getApps().length
 
 if (appIsNotInitialized) {
-  const app = initializeApp(config)
+  initializeApp(config)
+}
 
-  if (typeof window !== 'undefined') {
-    if (
-      process.env.NODE_ENV !== 'production' ||
-      process.env.IS_TESTING_FROM_CI
-    ) {
-      // @ts-ignore
-      self.FIREBASE_APPCHECK_DEBUG_TOKEN =
-        process.env.APP_CHECK_DEBUG_TOKEN_FROM_CI!
-    }
-    initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider(process.env.RECAPTCHA_V3_SITE_KEY!),
-      isTokenAutoRefreshEnabled: true
-    })
+export const initializeFirebaseAppCheck = () => {
+  if (process.env.NODE_ENV !== 'production' || process.env.IS_TESTING_FROM_CI) {
+    // @ts-ignore
+    self.FIREBASE_APPCHECK_DEBUG_TOKEN =
+      process.env.APP_CHECK_DEBUG_TOKEN_FROM_CI!
   }
+  initializeAppCheck(getApp(), {
+    provider: new ReCaptchaV3Provider(process.env.RECAPTCHA_V3_SITE_KEY!),
+    isTokenAutoRefreshEnabled: true
+  })
 }
 
 export const defaultAuth: Auth = getAuth()

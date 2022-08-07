@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider, useSelector } from 'react-redux'
@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components'
 import dark from '@styles/themes/dark'
 import light from '@styles/themes/light'
 import GlobalStyle from '@styles/global'
+import { initializeFirebaseAppCheck } from '@utils/firebaseClient'
 import { AuthProvider } from '@services/authProvider'
 
 interface ThemeWrapperProps {
@@ -25,6 +26,10 @@ const ThemeWrapper: FC<ThemeWrapperProps> = ({ children }) => {
 }
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
+  useEffect(() => {
+    initializeFirebaseAppCheck()
+  }, [])
+
   return (
     <Provider store={store}>
       <ThemeWrapper>
