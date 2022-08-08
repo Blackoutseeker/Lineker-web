@@ -1,21 +1,6 @@
 import { defaultDatabase } from '@utils/firebaseClient'
-import { ref, get, set, remove, onValue, off } from 'firebase/database'
+import { ref, set, remove, onValue, off } from 'firebase/database'
 import HistoryItem from '@models/historyItem'
-
-export const getAllHistoryItemsFromDatabase = async (
-  uid: string
-): Promise<HistoryItem[] | null> => {
-  const historyDatabaseRef = ref(defaultDatabase, `users/${uid}/history`)
-  return await get(historyDatabaseRef).then(snapshot => {
-    const snapshotIsNotEmpty =
-      snapshot.val() !== null && snapshot.val() !== undefined
-    if (snapshotIsNotEmpty) {
-      const historyItems: HistoryItem[] = Object.values(snapshot.val())
-      return historyItems
-    }
-    return null
-  })
-}
 
 export const addNewHistoryItemIntoDatabase = async (
   uid: string,

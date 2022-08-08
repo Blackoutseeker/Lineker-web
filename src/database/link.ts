@@ -1,5 +1,5 @@
 import { defaultDatabase } from '@utils/firebaseClient'
-import { ref, get, set, remove, onValue, off } from 'firebase/database'
+import { ref, set, remove, onValue, off } from 'firebase/database'
 import LinkItem from '@models/linkItem'
 
 const createFilterIfNotExists = async (
@@ -32,25 +32,6 @@ export const addNewLinkToDatabase = async (
     `users/${uid}/links/${filter}/${linkItem.datetime}`
   )
   await set(linkDatabaseRef, linkItem).then(onSuccess).catch(onError)
-}
-
-export const getAllLinksFromDatabase = async (
-  uid: string,
-  filter: string
-): Promise<LinkItem[] | null> => {
-  const linkItemsDatabaseRef = ref(
-    defaultDatabase,
-    `users/${uid}/links/${filter}`
-  )
-  return await get(linkItemsDatabaseRef).then(snapshot => {
-    const snapshotIsNotEmpty =
-      snapshot.val() !== null && snapshot.val() !== undefined
-    if (snapshotIsNotEmpty) {
-      const linkItems: LinkItem[] = Object.values(snapshot.val())
-      return linkItems
-    }
-    return null
-  })
 }
 
 export const removeLinkFromDatabase = async (
