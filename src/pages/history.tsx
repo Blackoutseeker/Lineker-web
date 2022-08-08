@@ -19,6 +19,7 @@ import Item from '@components/history/Item'
 const History: NextPage = () => {
   const auth = useAuth()
   const [historyItems, setHistoryItems] = useState<HistoryItem[] | null>(null)
+  const [search, setSearch] = useState<string>('')
   const historyDatabaseRef = `users/${auth.user?.uid}/history`
 
   const historyItemsSortedByMostRecentFirst = historyItems?.sort((a, b) => {
@@ -26,6 +27,25 @@ const History: NextPage = () => {
     const dateB = formatDateAndTimeStringToDate(b.date, b.time)
     return dateB.getTime() - dateA.getTime()
   })
+
+  const historyItemsFilteredBySearch =
+    historyItemsSortedByMostRecentFirst?.filter(historyItem => {
+      const searchInLowerCase = search.toLowerCase()
+      const titleInLowerCase = historyItem.title.toLowerCase()
+      const urlInLowerCase = historyItem.url.toLowerCase()
+      const dateInLowerCase = historyItem.date.toLowerCase()
+      const timeInLowerCase = historyItem.time.toLowerCase()
+
+      if (
+        titleInLowerCase.includes(searchInLowerCase) ||
+        urlInLowerCase.includes(searchInLowerCase) ||
+        dateInLowerCase.includes(searchInLowerCase) ||
+        timeInLowerCase.includes(searchInLowerCase)
+      ) {
+        return true
+      }
+      return false
+    })
 
   useEffect(() => {
     const historyListener = databaseHistoryItemsListener(
@@ -45,9 +65,9 @@ const History: NextPage = () => {
         <title>History - Lineker</title>
       </Head>
       <BackButton />
-      {historyItems ? (
-        <HistoryCard uid={auth.user?.uid}>
-          {historyItemsSortedByMostRecentFirst?.map(historyItem => (
+      {historyItemsFilteredBySearch ? (
+        <HistoryCard uid={auth.user?.uid} search={search} setSearch={setSearch}>
+          {historyItemsFilteredBySearch.map(historyItem => (
             <Item
               key={historyItem.datetime}
               uid={auth.user?.uid}

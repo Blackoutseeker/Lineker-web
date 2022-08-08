@@ -7,13 +7,21 @@ import {
   Divider
 } from './styles'
 import { removeAllHistoryFromDatabase } from '@database/history'
+import SearchBar from '@components/history/SearchBar'
 
 interface HistoryCardProps {
   uid: string | undefined
+  search: string
+  setSearch: (search: string) => void
   children: ReactNode[] | ReactNode | undefined
 }
 
-const HistoryCard: FC<HistoryCardProps> = ({ uid, children }) => {
+const HistoryCard: FC<HistoryCardProps> = ({
+  uid,
+  search,
+  setSearch,
+  children
+}) => {
   const deleteAllHistory = async () => {
     if (uid) {
       await removeAllHistoryFromDatabase(uid)
@@ -33,6 +41,7 @@ const HistoryCard: FC<HistoryCardProps> = ({ uid, children }) => {
         </DeleteAllButton>
       </CardHeader>
       <Divider />
+      <SearchBar search={search} setSearch={setSearch} />
       {children}
     </CardContainer>
   )
