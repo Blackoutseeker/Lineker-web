@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react'
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next'
 import HistoryItem from '@models/historyItem'
 import { parseCookies } from 'nookies'
-import {
-  getAllHistoryItemsFromDatabase,
-  databaseHistoryItemsListener
-} from '@database/history'
+import { databaseHistoryItemsListener } from '@database/history'
 import { defaultAuth } from '@utils/firebaseAdmin'
 import { Pages } from '@utils/constants'
 import { useAuth } from '@services/authProvider'
@@ -19,15 +16,9 @@ import VoidHistory from '@components/history/VoidHistory'
 import HistoryCard from '@components/history/HistoryCard'
 import Item from '@components/history/Item'
 
-interface HistoryProps {
-  preLoadedHistoryItems: HistoryItem[] | null
-}
-
-const History: NextPage<HistoryProps> = ({ preLoadedHistoryItems }) => {
+const History: NextPage = () => {
   const auth = useAuth()
-  const [historyItems, setHistoryItems] = useState<HistoryItem[] | null>(
-    preLoadedHistoryItems
-  )
+  const [historyItems, setHistoryItems] = useState<HistoryItem[] | null>(null)
   const historyDatabaseRef = `users/${auth.user?.uid}/history`
 
   const historyItemsSortedByMostRecentFirst = historyItems?.sort((a, b) => {
@@ -71,7 +62,7 @@ const History: NextPage<HistoryProps> = ({ preLoadedHistoryItems }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<HistoryProps> = async (
+export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   try {
@@ -80,16 +71,10 @@ export const getServerSideProps: GetServerSideProps<HistoryProps> = async (
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
-    const decodedIdToken = await defaultAuth.verifyIdToken(tokenLoaded)
-    const uid: string = decodedIdToken.uid
-
-    const preLoadedHistoryItems: HistoryItem[] | null =
-      await getAllHistoryItemsFromDatabase(uid)
+    await defaultAuth.verifyIdToken(tokenLoaded)
 
     return {
-      props: {
-        preLoadedHistoryItems
-      }
+      props: {}
     }
   } catch (_) {
     const isMobile = isMobileDevice(context.req.headers['user-agent'])

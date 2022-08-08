@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 import { parseCookies } from 'nookies'
 import load from '@services/load'
 import { defaultAuth } from '@utils/firebaseAdmin'
-import { databaseLinksListener, getAllLinksFromDatabase } from '@database/link'
+import { databaseLinksListener } from '@database/link'
 import { Pages } from '@utils/constants'
 import {
   decodeFromDatabase,
@@ -30,10 +30,9 @@ const QrModal = dynamic(() => import('@components/users/QrModal'))
 
 interface UserProps {
   currentFilter: string
-  preLoadedLinks: LinkItem[] | null
 }
 
-const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
+const User: NextPage<UserProps> = ({ currentFilter }) => {
   const auth = useAuth()
   const dispatch = useDispatch()
   const [searchInputValue, setSearchInputValue] = useState<string>('')
@@ -41,7 +40,7 @@ const User: NextPage<UserProps> = ({ currentFilter, preLoadedLinks }) => {
   const [showAddLinkModal, setShowAddLinkModal] = useState<boolean>(false)
   const [linkDatetime, setLinkDatetime] = useState<string>('')
   const [qrModalUrl, setQrModalUrl] = useState<string>('')
-  const [linkItems, setLinkItems] = useState<LinkItem[] | null>(preLoadedLinks)
+  const [linkItems, setLinkItems] = useState<LinkItem[] | null>(null)
   const linksDatabaseRef = `users/${auth.user?.uid}/links/${currentFilter}`
 
   const loadTheme = useCallback(() => {
@@ -140,18 +139,11 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
       return token
     }
     const tokenLoaded = load().loadToken(getTokenFromCookie)
-    const decodedIdToken = await defaultAuth.verifyIdToken(tokenLoaded)
-    const uid: string = decodedIdToken.uid
-
-    const preLoadedLinks: LinkItem[] | null = await getAllLinksFromDatabase(
-      uid,
-      currentFilter
-    )
+    await defaultAuth.verifyIdToken(tokenLoaded)
 
     return {
       props: {
-        currentFilter,
-        preLoadedLinks
+        currentFilter
       }
     }
   } catch (_) {
