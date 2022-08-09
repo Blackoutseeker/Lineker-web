@@ -24,6 +24,17 @@ describe('Testing the History feature and its actions', () => {
   const deleteAllHistoryButton = () =>
     cy.getElementByDataCy('delete-all-history-button')
 
+  const generateRandomId = (length: number = 6): string => {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let result = ''
+
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length))
+    }
+    return result
+  }
+
   const fillFormAndLogin = (email: string, password: string) => {
     emailInput().type(email)
     passwordInput().type(`${password}{enter}`)
@@ -70,11 +81,15 @@ describe('Testing the History feature and its actions', () => {
     cy.visit(loginPageUrl)
     fillFormAndLogin(realUserEmail, realUserPassword)
 
-    const title1 = 'Flutter'
+    const randomId1 = generateRandomId()
+    const randomId2 = generateRandomId()
+    const randomId3 = generateRandomId()
+
+    const title1 = `Flutter_${randomId1}`
     const url1 = 'https://flutter.dev'
-    const title2 = 'React'
+    const title2 = `React_${randomId2}`
     const url2 = 'https://reactjs.org'
-    const title3 = 'Python'
+    const title3 = `Python_${randomId3}`
     const url3 = 'https://www.python.org'
 
     createNewLink(title1, url1)
